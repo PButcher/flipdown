@@ -109,6 +109,7 @@
 .flipdown .rotor-leaf-front, .flipdown .rotor-leaf-rear {
   position: absolute;
   backface-visibility: hidden;
+  transform: rotateX(0deg);
   width: 50px;
   height: 40px;
   overflow: hidden;
@@ -160,8 +161,4 @@
   height: 40px;
   border-radius: 0px 0px 4px 4px;
   border-top: solid 1px #151515;
-}
-
-.flipdown .flip-text {
-  ransform: rotateY(180deg);
 }

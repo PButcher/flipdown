@@ -1,7 +1,7 @@
 /**
 * @name FlipDown
 * @version 0.1.0
-* @description Flip clock styled countdown
+* @description Flip styled countdown clock
 * @author Peter Butcher (PButcher) <pbutcher93[at]gmail[dot]com>
 **/
 function FlipDown(t, el) {
@@ -133,24 +133,20 @@ FlipDown.prototype.createRotorGroup = function(rotors) {
 FlipDown.prototype.createRotor = function(v) {
   var rotor = document.createElement('div');
   var rotorLeaf = document.createElement('div');
-  var flipText = document.createElement('div');
   var rotorLeafRear = document.createElement('figure');
   var rotorLeafFront = document.createElement('figure');
   var rotorTop = document.createElement('div');
   var rotorBottom = document.createElement('div');
   rotor.className = 'rotor';
   rotorLeaf.className = 'rotor-leaf';
-  flipText.className = 'flip-text';
   rotorLeafRear.className = 'rotor-leaf-rear';
   rotorLeafFront.className = 'rotor-leaf-front';
   rotorTop.className = 'rotor-top';
   rotorBottom.className = 'rotor-bottom';
-  flipText.textContent = v;
   rotorLeafRear.textContent = v;
   rotorTop.textContent = v;
   rotorBottom.textContent = v;
   appendChildren(rotor, [rotorLeaf, rotorTop, rotorBottom]);
-  rotorLeafFront.appendChild(flipText);
   appendChildren(rotorLeaf, [rotorLeafRear, rotorLeafFront]);
   return rotor;
 }
@@ -216,11 +212,6 @@ FlipDown.prototype.updateClockValues = function() {
     this.rotorTop.forEach((el, i) => {
       if(el.textContent != this.clockValuesAsString[i]) {
         el.textContent = this.clockValuesAsString[i];
-        el.parentElement.classList.add('flipped');
-        var flip = setInterval(function() {
-          el.parentElement.classList.remove('flipped');
-          clearInterval(flip);
-        }.bind(this), 500);
       }
     });
   }.bind(this), 500);

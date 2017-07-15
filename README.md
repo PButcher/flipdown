@@ -6,6 +6,8 @@ Version: 0.1.0
 
 ## Example
 
+Example live at: https://pbutcher.uk/flipdown/
+
 FlipDown takes a unix timestamp and a DOM element ID as arguments.
 
 ```javascript

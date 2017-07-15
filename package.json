@@ -1,0 +1,19 @@
+{
+  "name": "flipdown",
+  "version": "0.1.0",
+  "description": "A flip styled countdown clock",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/PButcher/flipdown.git"
+  },
+  "author": "Peter Butcher <pbutcher93@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PButcher/flipdown/issues"
+  },
+  "homepage": "https://github.com/PButcher/flipdown#readme"
+}

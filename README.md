@@ -1,3 +1,5 @@
+<span style="text-align:center"><img src="http://i.imgur.com/UtbIc4S.png" title="Example of FlipDown"></span>
+
 # FlipDown
 
 Flip styled countdown clock.

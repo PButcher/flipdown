@@ -4,7 +4,10 @@
   "description": "A flip styled countdown clock",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dist": "cp src/flipdown.js dist/flipdown-v0.1.0.js && cp src/flipdown.css dist/flipdown-v0.1.0.css",
+    "example": "cp src/flipdown.js example/js/flipdown-v0.1.0.js && cp src/flipdown.css example/css/flipdown-v0.1.0.css",
+    "build": "npm run dist && npm run example"
   },
   "repository": {
     "type": "git",

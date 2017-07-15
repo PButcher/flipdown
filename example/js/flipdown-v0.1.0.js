@@ -1,7 +1,7 @@
 /**
 * @name FlipDown
 * @version 0.1.0
-* @description Flip clock styled countdown
+* @description Flip styled countdown clock
 * @author Peter Butcher (PButcher) <pbutcher93[at]gmail[dot]com>
 **/
 function FlipDown(t, el) {

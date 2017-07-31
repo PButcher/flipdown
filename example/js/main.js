@@ -1,3 +1,3 @@
 document.addEventListener('DOMContentLoaded', () => {
-  var flipdown = new FlipDown(1500667200, 'flipdown').start();
+  var flipdown = new FlipDown(1509867200, 'flipdown').start();
 });

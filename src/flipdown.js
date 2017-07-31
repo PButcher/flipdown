@@ -10,7 +10,7 @@ function FlipDown(t, el) {
   this.version = '0.1.0';
 
   // Time at instantiation in seconds
-  this.now = new Date().getTime() / 1000;
+  this.now = this.getTime();
 
   // UTS to count down to
   this.epoch = t;
@@ -60,11 +60,22 @@ FlipDown.prototype.start = function() {
 }
 
 /**
+* @name FlipDown.prototype.getTime
+* @description Get the time in seconds (unix timestamp)
+* @author PButcher
+**/
+FlipDown.prototype.getTime = function() {
+  return new Date().getTime() / 1000;
+}
+
+/**
 * @name FlipDown.prototype.init
 * @description Initialise the countdown
 * @author PButcher
 **/
 FlipDown.prototype.init = function() {
+
+  // Calculate how many digits the day counter needs
   this.daysremaining = Math.floor((this.epoch - this.now) / 86400).toString().length;
   var dayRotorCount = this.daysremaining <= 2 ? 2 : this.daysremaining;
 
@@ -91,22 +102,15 @@ FlipDown.prototype.init = function() {
     this.element.appendChild(this.createRotorGroup(otherRotors));
   }
 
-  this.rotorLeafFront = Array.from(
-    document.getElementsByClassName('rotor-leaf-front')
-  );
-  this.rotorLeafRear = Array.from(
-    document.getElementsByClassName('rotor-leaf-rear')
-  );
-  this.rotorTop = Array.from(
-    document.getElementsByClassName('rotor-top')
-  );
-  this.rotorBottom = Array.from(
-    document.getElementsByClassName('rotor-bottom')
-  );
+  // Store and convert rotor nodelists to arrays
+  this.rotorLeafFront = Array.from(document.getElementsByClassName('rotor-leaf-front'));
+  this.rotorLeafRear = Array.from(document.getElementsByClassName('rotor-leaf-rear'));
+  this.rotorTop = Array.from(document.getElementsByClassName('rotor-top'));
+  this.rotorBottom = Array.from(document.getElementsByClassName('rotor-bottom'));
 
   // Set initial values;
   this.tick();
-  this.updateClockValues();
+  this.updateClockValues(1);
 }
 
 /**
@@ -159,7 +163,7 @@ FlipDown.prototype.createRotor = function(v) {
 FlipDown.prototype.tick = function() {
 
   // Get time now
-  this.now = new Date().getTime() / 1000;
+  this.now = this.getTime();
 
   // Between now and epoch
   var diff = this.epoch - this.now;
@@ -186,9 +190,10 @@ FlipDown.prototype.tick = function() {
 /**
 * @name FlipDown.prototype.updateClockValues
 * @description Update the clock face values
+* @param init {number} - 1 if calling for initialisation
 * @author PButcher
 **/
-FlipDown.prototype.updateClockValues = function() {
+FlipDown.prototype.updateClockValues = function(init) {
 
   // Build clock value strings
   this.clockStrings.d = pad(this.clockValues.d, 2);
@@ -199,24 +204,31 @@ FlipDown.prototype.updateClockValues = function() {
   // Concat clock value strings
   this.clockValuesAsString = (this.clockStrings.d + this.clockStrings.h + this.clockStrings.m + this.clockStrings.s).split('');
 
-  this.rotorBottom.forEach((el, i) => {
-    el.textContent = this.prevClockValuesAsString[i];
-  });
 
   // Update rotor values
+  // Note that the faces which are initially visible are:
+  // - rotorLeafFront (top half of current rotor)
+  // - rotorBottom (bottom half of current rotor)
+  // Note that the faces which are initially hidden are:
+  // - rotorTop (top half of next rotor)
+  // - rotorLeafRear (bottom half of next rotor)
   this.rotorLeafFront.forEach((el, i) => {
     el.textContent = this.prevClockValuesAsString[i];
   });
 
-  setTimeout(function() {
+  this.rotorBottom.forEach((el, i) => {
+    el.textContent = this.prevClockValuesAsString[i];
+  });
+
+  function rotorTopFlip() {
     this.rotorTop.forEach((el, i) => {
       if(el.textContent != this.clockValuesAsString[i]) {
         el.textContent = this.clockValuesAsString[i];
       }
     });
-  }.bind(this), 500);
+  }
 
-  setTimeout(function() {
+  function rotorLeafRearFlip() {
     this.rotorLeafRear.forEach((el, i) => {
       if(el.textContent != this.clockValuesAsString[i]) {
         el.textContent = this.clockValuesAsString[i];
@@ -227,7 +239,16 @@ FlipDown.prototype.updateClockValues = function() {
         }.bind(this), 500);
       }
     });
-  }.bind(this), 500);
+  }
+
+  // Init
+  if(init != 1) {
+    setTimeout(rotorTopFlip.bind(this), 500);
+    setTimeout(rotorLeafRearFlip.bind(this), 500);
+  } else {
+    rotorTopFlip.call(this);
+    rotorLeafRearFlip.call(this);
+  }
 
   // Save a copy of clock values for next tick
   this.prevClockValuesAsString = this.clockValuesAsString;

@@ -1,13 +1,13 @@
 /**
 * @name FlipDown
-* @version 0.1.0
+* @version 0.1.1
 * @description Flip styled countdown clock
 * @author Peter Butcher (PButcher) <pbutcher93[at]gmail[dot]com>
 **/
 function FlipDown(t, el) {
 
   // FlipDown Version
-  this.version = '0.1.0';
+  this.version = '0.1.1';
 
   // Time at instantiation in seconds
   this.now = this.getTime();

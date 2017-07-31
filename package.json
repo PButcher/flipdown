@@ -1,6 +1,6 @@
 {
   "name": "flipdown",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A flip styled countdown clock",
   "main": "main.js",
   "scripts": {

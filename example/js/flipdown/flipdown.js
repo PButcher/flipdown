@@ -1,13 +1,13 @@
 /**
 * @name FlipDown
-* @version 0.1.0
+* @version 0.1.2
 * @description Flip styled countdown clock
 * @author Peter Butcher (PButcher) <pbutcher93[at]gmail[dot]com>
 **/
 function FlipDown(t, el) {
 
   // FlipDown Version
-  this.version = '0.1.0';
+  this.version = '0.1.2';
 
   // Time at instantiation in seconds
   this.now = this.getTime();
@@ -166,7 +166,7 @@ FlipDown.prototype.tick = function() {
   this.now = this.getTime();
 
   // Between now and epoch
-  var diff = this.epoch - this.now;
+  var diff = ((this.epoch - this.now) <=0) ? 0 : this.epoch - this.now;
 
   // Days remaining
   this.clockValues.d = Math.floor(diff / 86400);

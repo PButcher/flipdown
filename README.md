@@ -10,6 +10,8 @@ Version: 0.1.2
 
 Example live at: https://pbutcher.uk/flipdown/
 
+Remix FlipDown on CodePen: https://codepen.io/PButcher/pen/dzvMzZ
+
 ## Usage
 
 FlipDown takes a unix timestamp and a DOM element ID as arguments.

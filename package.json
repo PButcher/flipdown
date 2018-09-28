@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist && mkdir -p dist && rm -rf example/css/flipdown && mkdir -p example/css/flipdown && rm -rf example/js/flipdown && mkdir -p example/js/flipdown",
-    "dist": "cp src/flipdown.js dist/flipdown-v0.1.2.js && cp src/flipdown.css dist/flipdown-v0.1.2.css",
+    "dist": "cp src/flipdown.js dist/flipdown.js && cp src/flipdown.css dist/flipdown.css",
     "example": "cp src/flipdown.js example/js/flipdown/flipdown.js && cp src/flipdown.css example/css/flipdown/flipdown.css",
     "build": "npm run clean && npm run dist && npm run example"
   },

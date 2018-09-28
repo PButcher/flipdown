@@ -2,9 +2,9 @@
 
 # FlipDown
 
-Flip styled countdown clock.
+A lightweight and performant flip styled countdown clock.
 
-Version: 0.1.3
+Version: 0.1.3 [JS: 3.9KB, CSS: 2.45KB]
 
 ## Example
 

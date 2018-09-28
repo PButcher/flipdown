@@ -1,6 +1,6 @@
 /**
 * @name FlipDown
-* @version 0.1.2
+* @version 0.1.3
 * @description Flip styled countdown clock
 * @author Peter Butcher (PButcher) <pbutcher93[at]gmail[dot]com>
 * @param {number} t - Time to count down to as unix timestamp
@@ -9,7 +9,7 @@
 function FlipDown(t, el) {
 
   // FlipDown Version
-  this.version = '0.1.2';
+  this.version = '0.1.3';
 
   // Initialised?
   this.initialised = false;

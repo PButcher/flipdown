@@ -3,17 +3,25 @@
 * @version 0.1.2
 * @description Flip styled countdown clock
 * @author Peter Butcher (PButcher) <pbutcher93[at]gmail[dot]com>
+* @param {number} t - Time to count down to as unix timestamp
+* @param {string} el - DOM element to attach FlipDown to
 **/
 function FlipDown(t, el) {
 
   // FlipDown Version
   this.version = '0.1.2';
 
+  // Initialised?
+  this.initialised = false;
+
   // Time at instantiation in seconds
   this.now = this.getTime();
 
   // UTS to count down to
   this.epoch = t;
+
+  // UTS passed to FlipDown is in the past
+  this.countdownEnded = (this.epoch - this.now) < 0;
 
   // FlipDown DOM element
   this.element = document.getElementById(el);
@@ -53,10 +61,24 @@ function FlipDown(t, el) {
 FlipDown.prototype.start = function() {
 
   // Initialise the clock
-  this.init();
+  if(!this.initialised) this.init();
 
   // Set up the countdown interval
   this.countdown = setInterval(this.tick.bind(this), 1000);
+
+  return this;
+}
+
+/**
+* @name FlipDown.prototype.ifEnded
+* @description Call a function once the countdown ends
+* @author PButcher
+* @param {function} cb - Callback
+**/
+FlipDown.prototype.ifEnded = function(cb) {
+  cb();
+
+  return this;
 }
 
 /**
@@ -75,8 +97,14 @@ FlipDown.prototype.getTime = function() {
 **/
 FlipDown.prototype.init = function() {
 
+  this.initialised = true;
+
   // Calculate how many digits the day counter needs
-  this.daysremaining = Math.floor((this.epoch - this.now) / 86400).toString().length;
+  if(this.countdownEnded) {
+    this.daysremaining = 0;
+  } else {
+    this.daysremaining = Math.floor((this.epoch - this.now) / 86400).toString().length;
+  }
   var dayRotorCount = this.daysremaining <= 2 ? 2 : this.daysremaining;
 
   // Create and store rotors
@@ -110,14 +138,16 @@ FlipDown.prototype.init = function() {
 
   // Set initial values;
   this.tick();
-  this.updateClockValues(1);
+  this.updateClockValues(true);
+
+  return this;
 }
 
 /**
 * @name FlipDown.prototype.createRotorGroup
-* @param rotors {array}
 * @description Add rotors to the DOM
 * @author PButcher
+* @param {array} rotors - A set of rotors
 **/
 FlipDown.prototype.createRotorGroup = function(rotors) {
   var rotorGroup = document.createElement('div');
@@ -166,7 +196,7 @@ FlipDown.prototype.tick = function() {
   this.now = this.getTime();
 
   // Between now and epoch
-  var diff = ((this.epoch - this.now) <=0) ? 0 : this.epoch - this.now;
+  var diff = ((this.epoch - this.now) <= 0) ? 0 : this.epoch - this.now;
 
   // Days remaining
   this.clockValues.d = Math.floor(diff / 86400);
@@ -190,10 +220,10 @@ FlipDown.prototype.tick = function() {
 /**
 * @name FlipDown.prototype.updateClockValues
 * @description Update the clock face values
-* @param init {number} - 1 if calling for initialisation
 * @author PButcher
+* @param {boolean} init - True if calling for initialisation
 **/
-FlipDown.prototype.updateClockValues = function(init) {
+FlipDown.prototype.updateClockValues = function(init = false) {
 
   // Build clock value strings
   this.clockStrings.d = pad(this.clockValues.d, 2);
@@ -203,7 +233,6 @@ FlipDown.prototype.updateClockValues = function(init) {
 
   // Concat clock value strings
   this.clockValuesAsString = (this.clockStrings.d + this.clockStrings.h + this.clockStrings.m + this.clockStrings.s).split('');
-
 
   // Update rotor values
   // Note that the faces which are initially visible are:
@@ -242,7 +271,7 @@ FlipDown.prototype.updateClockValues = function(init) {
   }
 
   // Init
-  if(init != 1) {
+  if(!init) {
     setTimeout(rotorTopFlip.bind(this), 500);
     setTimeout(rotorLeafRearFlip.bind(this), 500);
   } else {
@@ -258,19 +287,22 @@ FlipDown.prototype.updateClockValues = function(init) {
 * @name pad
 * @description Prefix a number with zeroes
 * @author PButcher
+* @param {string} n - Number to pad
+* @param {number} len - Desired length of number
 **/
-function pad(str, max) {
-  str = str.toString();
-  return str.length < max ? pad("0" + str, max) : str;
+function pad(n, len) {
+  n = n.toString();
+  return n.length < len ? pad("0" + n, len) : n;
 }
 
 /**
 * @name appendChildren
 * @description Add multiple children to an element
 * @author PButcher
+* @param {object} parent - Parent
 **/
-function appendChildren(element, children) {
+function appendChildren(parent, children) {
   children.forEach(el => {
-    element.appendChild(el);
+    parent.appendChild(el);
   });
 }

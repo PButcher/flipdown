@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist && mkdir -p dist && rm -rf example/css/flipdown && mkdir -p example/css/flipdown && rm -rf example/js/flipdown && mkdir -p example/js/flipdown",
-    "dist": "cp src/flipdown.js dist/flipdown.js && babel src/flipdown.js --presets minify --no-comments -o dist/flipdown.min.js && cp src/flipdown.css dist/flipdown.css && uglifycss src/flipdown.css > dist/flipdown.min.css",
-    "example": "cp src/flipdown.js example/js/flipdown/flipdown.js && cp src/flipdown.css example/css/flipdown/flipdown.css",
+    "dist": "npx babel src/flipdown.js -o dist/flipdown.js --presets=env --no-comments && npx babel src/flipdown.js --presets=env,minify --no-comments -o dist/flipdown.min.js && cp src/flipdown.css dist/flipdown.css && uglifycss src/flipdown.css > dist/flipdown.min.css",
+    "example": "npx babel src/flipdown.js -o example/js/flipdown/flipdown.js --presets=env --no-comments && cp dist/flipdown.css example/css/flipdown/flipdown.css",
     "build": "npm run clean && npm run dist && npm run example"
   },
   "repository": {
@@ -22,7 +22,9 @@
   "homepage": "https://github.com/PButcher/flipdown#readme",
   "dependencies": {},
   "devDependencies": {
-    "babel-cli": "^6.26.0",
+    "@babel/cli": "^7.1.0",
+    "@babel/core": "^7.1.0",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-minify": "^0.5.0",
     "uglifycss": "0.0.29"
   }

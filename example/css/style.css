@@ -6,13 +6,15 @@
   bottom: 0;
   left: 0;
   width: 510px;
-  height: 200px;;
+  height: 350px;
   margin: auto;
 }
 
 .example .flipdown {
   font-family: sans-serif;
   font-weight: bold;
+  overflow: visible;
+  height: 110px;
 }
 
 .example h1 {
@@ -20,4 +22,50 @@
   font-weight: 100;
   font-size: 3em;
   margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.example p {
+  text-align: center;
+  font-weight: 100;
+  margin-top: 0;
+  margin-bottom: 35px;
+}
+
+.example .buttons {
+  width: 408px;
+  height: 50px;
+  margin: 50px auto 0px auto;
+}
+
+.example .buttons p {
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  font-weight: 400;
+  padding: 0px 25px 0px 0px;
+  color: #333;
+}
+
+.example .button {
+  display: inline-block;
+  height: 50px;
+  box-sizing: border-box;
+  line-height: 46px;
+  text-decoration: none;
+  color: #333;
+  padding: 0px 20px;
+  border: solid 2px #333;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.example .button:hover {
+  background-color: #333;
+  color: #FFF;
+}
+
+.example .button i {
+  margin-right: 5px;
 }

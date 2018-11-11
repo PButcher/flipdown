@@ -10,7 +10,7 @@ var FlipDown = function () {
   function FlipDown(t, el) {
     _classCallCheck(this, FlipDown);
 
-    this.version = '0.1.3';
+    this.version = '0.1.4';
     this.initialised = false;
     this.now = this._getTime();
     this.epoch = t;

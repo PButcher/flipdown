@@ -9,7 +9,7 @@ class FlipDown {
   constructor(t, el) {
 
     // FlipDown version
-    this.version = '0.1.3';
+    this.version = '0.1.4';
 
     // Initialised?
     this.initialised = false;

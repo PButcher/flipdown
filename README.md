@@ -136,3 +136,7 @@ var flipdown = new FlipDown(1538137672)
     console.log('The countdown has ended!');
   });
 ```
+
+## Acknowledgements
+
+Thanks to @chuckbergeron for his help with making FlipDown responsive.

@@ -139,4 +139,4 @@ var flipdown = new FlipDown(1538137672)
 
 ## Acknowledgements
 
-Thanks to @chuckbergeron for his help with making FlipDown responsive.
+Thanks to [@chuckbergeron](https://github.com/chuckbergeron) for his help with making FlipDown responsive.

@@ -10,8 +10,8 @@ Version: 0.2.0 [JS: 5.66KB, CSS: 4.44KB]
 
 * 💡 Lightweight - No jQuery! <11KB minified
 * ⚡ Performant - Animations powered by CSS transitions
-* 📱 Responsive - works great on screens of all sizes
-* 🎨 Themeable - choose from built-in themes, or add your own
+* 📱 Responsive - Works great on screens of all sizes
+* 🎨 Themeable - Choose from built-in themes, or add your own
 
 ## Example
 

@@ -391,3 +391,5 @@ function appendChildren(parent, children) {
     parent.appendChild(el);
   });
 }
+
+export default FlipDown;

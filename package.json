@@ -1,8 +1,8 @@
 {
   "name": "flipdown",
-  "version": "0.1.3",
-  "description": "A flip styled countdown clock",
-  "main": "main.js",
+  "version": "0.2.0",
+  "description": "A lightweight and performant flip styled countdown clock",
+  "main": "src/flipdown.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist && mkdir -p dist && rm -rf example/css/flipdown && mkdir -p example/css/flipdown && rm -rf example/js/flipdown && mkdir -p example/js/flipdown",

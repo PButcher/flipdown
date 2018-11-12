@@ -1,25 +1,91 @@
+/* THEMES */
+
+/********** Theme: dark **********/
+/* Font styles */
+.flipdown.flipdown__theme-dark {
+  font-family: sans-serif;
+  font-weight: bold;
+}
+/* Rotor group headings */
+.flipdown.flipdown__theme-dark .rotor-group-heading:before {
+  color: #000000;
+}
+/* Delimeters */
+.flipdown.flipdown__theme-dark .rotor-group:nth-child(n+2):nth-child(-n+3):before,
+.flipdown.flipdown__theme-dark .rotor-group:nth-child(n+2):nth-child(-n+3):after {
+  background-color: #151515;
+}
+/* Rotor tops */
+.flipdown.flipdown__theme-dark .rotor,
+.flipdown.flipdown__theme-dark .rotor-top,
+.flipdown.flipdown__theme-dark .rotor-leaf-front {
+  color: #FFFFFF;
+  background-color: #151515;
+}
+/* Rotor bottoms */
+.flipdown.flipdown__theme-dark .rotor-bottom,
+.flipdown.flipdown__theme-dark .rotor-leaf-rear {
+  color: #EFEFEF;
+  background-color: #202020;
+}
+/* Hinge */
+.flipdown.flipdown__theme-dark .rotor:after {
+  border-top: solid 1px #151515;
+}
+
+/********** Theme: light **********/
+/* Font styles */
+.flipdown.flipdown__theme-light {
+  font-family: sans-serif;
+  font-weight: bold;
+}
+/* Rotor group headings */
+.flipdown.flipdown__theme-light .rotor-group-heading:before {
+  color: #EEEEEE;
+}
+/* Delimeters */
+.flipdown.flipdown__theme-light .rotor-group:nth-child(n+2):nth-child(-n+3):before,
+.flipdown.flipdown__theme-light .rotor-group:nth-child(n+2):nth-child(-n+3):after {
+  background-color: #DDDDDD;
+}
+/* Rotor tops */
+.flipdown.flipdown__theme-light .rotor,
+.flipdown.flipdown__theme-light .rotor-top,
+.flipdown.flipdown__theme-light .rotor-leaf-front {
+  color: #222222;
+  background-color: #DDDDDD;
+}
+/* Rotor bottoms */
+.flipdown.flipdown__theme-light .rotor-bottom,
+.flipdown.flipdown__theme-light .rotor-leaf-rear {
+  color: #333333;
+  background-color: #EEEEEE;
+}
+/* Hinge */
+.flipdown.flipdown__theme-light .rotor:after {
+  border-top: solid 1px #222222;
+}
+
+/* END OF THEMES */
+
 .flipdown {
   overflow: visible;
   width: 510px;
+  height: 110px;
 }
 
 .flipdown .rotor-group {
-  overflow: visible;
   position: relative;
   float: left;
   padding-right: 30px;
 }
 
-.flipdown .rotor-group-heading {
-  height: 30px;
-  margin-bottom: 0px;
-  text-align: center;
-  color: black;
+.flipdown .rotor-group:last-child {
+  padding-right: 0;
 }
 
 .flipdown .rotor-group-heading:before {
-  content: 'Days';
-  width: 135px;
+  display: block;
   height: 30px;
   line-height: 30px;
   text-align: center;
@@ -41,10 +107,6 @@
   content: 'Seconds';
 }
 
-.flipdown .rotor-group:last-child {
-  padding-right: 0;
-}
-
 .flipdown .rotor-group:nth-child(n+2):nth-child(-n+3):before {
   content: '';
   position: absolute;
@@ -53,7 +115,6 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: #151515;
 }
 
 .flipdown .rotor-group:nth-child(n+2):nth-child(-n+3):after {
@@ -64,7 +125,6 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: #151515;
 }
 
 .flipdown .rotor {
@@ -74,10 +134,8 @@
   height: 80px;
   margin: 0px 5px 0px 0px;
   border-radius: 4px;
-  font-size: 4em;
+  font-size: 4rem;
   text-align: center;
-  background-color: #151515;
-  color: white;
   perspective: 200px;
 }
 
@@ -85,7 +143,8 @@
   margin-right: 0;
 }
 
-.flipdown .rotor-top, .flipdown .rotor-bottom {
+.flipdown .rotor-top,
+.flipdown .rotor-bottom {
   overflow: hidden;
   position: absolute;
   width: 50px;
@@ -106,7 +165,8 @@
   transition: all 0.5s ease-in-out;
 }
 
-.flipdown .rotor-leaf-front, .flipdown .rotor-leaf-rear {
+.flipdown .rotor-leaf-front,
+.flipdown .rotor-leaf-rear {
   overflow: hidden;
   position: absolute;
   width: 50px;
@@ -118,36 +178,23 @@
 
 .flipdown .rotor-leaf-front {
   line-height: 80px;
-  background-color: #151515;
   border-radius: 4px 4px 0px 0px;
 }
 
 .flipdown .rotor-leaf-rear {
   line-height: 0px;
-  background-color: #202020;
-  color: #E0E0E0;
   border-radius: 0px 0px 4px 4px;
   transform: rotateX(-180deg);
-  transition: background-color 0.5s;
-}
-
-.flipdown .rotor-leaf.flipped .rotor-leaf-rear {
-  background-color: #202020;
-  color: #EFEFEF;
-  transition: background-color 0.5s;
 }
 
 .flipdown .rotor-top {
   line-height: 80px;
-  background-color: #151515;
   border-radius: 4px 4px 0px 0px;
 }
 
 .flipdown .rotor-bottom {
   bottom: 0;
   line-height: 0px;
-  background-color: #202020;
-  color: #EFEFEF;
   border-radius: 0px 0px 4px 4px;
 }
 
@@ -159,6 +206,77 @@
   left: 0px;
   width: 50px;
   height: 40px;
-  border-top: solid 1px #151515;
   border-radius: 0px 0px 4px 4px;
+}
+
+@media (max-width: 550px) {
+
+  .flipdown {
+    width: 312px;
+    height: 70px;
+  }
+
+  .flipdown .rotor {
+    font-size: 2.2rem;
+    margin-right: 3px;
+  }
+
+  .flipdown .rotor,
+  .flipdown .rotor-leaf,
+  .flipdown .rotor-leaf-front,
+  .flipdown .rotor-leaf-rear,
+  .flipdown .rotor-top,
+  .flipdown .rotor-bottom,
+  .flipdown .rotor:after {
+    width: 30px;
+  }
+
+  .flipdown .rotor-group {
+    padding-right: 20px;
+  }
+
+  .flipdown .rotor-group:last-child {
+    padding-right: 0px;
+  }
+
+  .flipdown .rotor-group-heading:before {
+    font-size: 0.8rem;
+    height: 20px;
+    line-height: 20px;
+  }
+
+  .flipdown .rotor-group:nth-child(n+2):nth-child(-n+3):before,
+  .flipdown .rotor-group:nth-child(n+2):nth-child(-n+3):after {
+    left: 69px;
+  }
+
+  .flipdown .rotor-group:nth-child(n+2):nth-child(-n+3):before {
+    bottom: 13px;
+    height: 8px;
+    width: 8px;
+  }
+
+  .flipdown .rotor-group:nth-child(n+2):nth-child(-n+3):after {
+    bottom: 29px;
+    height: 8px;
+    width: 8px;
+  }
+
+  .flipdown .rotor-leaf-front,
+  .flipdown .rotor-top {
+    line-height: 50px;
+  }
+
+  .flipdown .rotor-leaf,
+  .flipdown .rotor {
+    height: 50px;
+  }
+
+  .flipdown .rotor-leaf-front,
+  .flipdown .rotor-leaf-rear,
+  .flipdown .rotor-top,
+  .flipdown .rotor-bottom,
+  .flipdown .rotor:after {
+    height: 25px;
+  }
 }

@@ -1,5 +1,7 @@
 "use strict";
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -7,13 +9,25 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var FlipDown = function () {
-  function FlipDown(t, el) {
+  function FlipDown(uts) {
+    var el = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'flipdown';
+    var opt = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
     _classCallCheck(this, FlipDown);
 
-    this.version = '0.1.4';
+    if (typeof uts !== 'number') {
+      throw new Error("FlipDown: Constructor expected unix timestamp, got ".concat(_typeof(uts), " instead."));
+    }
+
+    if (_typeof(el) === 'object') {
+      opt = el;
+      el = 'flipdown';
+    }
+
+    this.version = '0.2.0';
     this.initialised = false;
     this.now = this._getTime();
-    this.epoch = t;
+    this.epoch = uts;
     this.countdownEnded = false;
     this.hasEndedCallback = null;
     this.element = document.getElementById(el);
@@ -28,7 +42,11 @@ var FlipDown = function () {
     this.clockStrings = {};
     this.clockValuesAsString = [];
     this.prevClockValuesAsString = [];
-    console.log('FlipDown ' + this.version);
+    this.opts = this._parseOptions(opt);
+
+    this._setOptions();
+
+    console.log("FlipDown ".concat(this.version, " (Theme: ").concat(this.opts.theme, ")"));
   }
 
   _createClass(FlipDown, [{
@@ -71,6 +89,18 @@ var FlipDown = function () {
       }
     }
   }, {
+    key: "_parseOptions",
+    value: function _parseOptions(opt) {
+      return {
+        theme: opt.hasOwnProperty('theme') ? opt.theme : 'dark'
+      };
+    }
+  }, {
+    key: "_setOptions",
+    value: function _setOptions() {
+      this.element.classList.add("flipdown__theme-".concat(this.opts.theme));
+    }
+  }, {
     key: "_init",
     value: function _init() {
       this.initialised = true;
@@ -107,10 +137,10 @@ var FlipDown = function () {
         this.element.appendChild(this._createRotorGroup(otherRotors));
       }
 
-      this.rotorLeafFront = Array.from(document.getElementsByClassName('rotor-leaf-front'));
-      this.rotorLeafRear = Array.from(document.getElementsByClassName('rotor-leaf-rear'));
-      this.rotorTop = Array.from(document.getElementsByClassName('rotor-top'));
-      this.rotorBottom = Array.from(document.getElementsByClassName('rotor-bottom'));
+      this.rotorLeafFront = Array.from(this.element.getElementsByClassName('rotor-leaf-front'));
+      this.rotorLeafRear = Array.from(this.element.getElementsByClassName('rotor-leaf-rear'));
+      this.rotorTop = Array.from(this.element.getElementsByClassName('rotor-top'));
+      this.rotorBottom = Array.from(this.element.getElementsByClassName('rotor-bottom'));
 
       this._tick();
 

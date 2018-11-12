@@ -4,12 +4,24 @@
 * @author Peter Butcher (PButcher) <pbutcher93[at]gmail[dot]com>
 * @param {number} uts - Time to count down to as unix timestamp
 * @param {string} el - DOM element to attach FlipDown to
+* @param {object} opt - Optional configuration settings
 **/
 class FlipDown {
-  constructor(t, el) {
+  constructor(uts, el = 'flipdown', opt = {}) {
+
+    // If uts is not specified
+    if(typeof uts !== 'number') {
+      throw new Error(`FlipDown: Constructor expected unix timestamp, got ${typeof uts} instead.`);
+    }
+
+    // If opt is specified, but not el
+    if(typeof el === 'object') {
+      opt = el;
+      el = 'flipdown';
+    }
 
     // FlipDown version
-    this.version = '0.1.4';
+    this.version = '0.2.0';
 
     // Initialised?
     this.initialised = false;
@@ -18,7 +30,7 @@ class FlipDown {
     this.now = this._getTime();
 
     // UTS to count down to
-    this.epoch = t;
+    this.epoch = uts;
 
     // UTS passed to FlipDown is in the past
     this.countdownEnded = false;
@@ -52,8 +64,14 @@ class FlipDown {
     this.clockValuesAsString = [];
     this.prevClockValuesAsString = [];
 
+    // Parse options
+    this.opts = this._parseOptions(opt);
+
+    // Set options
+    this._setOptions();
+
     // Print Version
-    console.log('FlipDown ' + this.version);
+    console.log(`FlipDown ${this.version} (Theme: ${this.opts.theme})`);
   }
 
   /**
@@ -129,6 +147,30 @@ class FlipDown {
   }
 
   /**
+  * @name _parseOptions
+  * @description Parse any passed options
+  * @param {object} opt - Optional configuration settings
+  * @author PButcher
+  **/
+  _parseOptions(opt) {
+    return {
+      // Theme
+      theme: (opt.hasOwnProperty('theme')) ? opt.theme : 'dark'
+    }
+  }
+
+  /**
+  * @name _setOptions
+  * @description Set optional configuration settings
+  * @author PButcher
+  **/
+  _setOptions() {
+
+    // Apply theme
+    this.element.classList.add(`flipdown__theme-${this.opts.theme}`);
+  }
+
+  /**
   * @name _init
   * @description Initialise the countdown
   * @author PButcher
@@ -169,10 +211,10 @@ class FlipDown {
     }
 
     // Store and convert rotor nodelists to arrays
-    this.rotorLeafFront = Array.from(document.getElementsByClassName('rotor-leaf-front'));
-    this.rotorLeafRear = Array.from(document.getElementsByClassName('rotor-leaf-rear'));
-    this.rotorTop = Array.from(document.getElementsByClassName('rotor-top'));
-    this.rotorBottom = Array.from(document.getElementsByClassName('rotor-bottom'));
+    this.rotorLeafFront = Array.from(this.element.getElementsByClassName('rotor-leaf-front'));
+    this.rotorLeafRear = Array.from(this.element.getElementsByClassName('rotor-leaf-rear'));
+    this.rotorTop = Array.from(this.element.getElementsByClassName('rotor-top'));
+    this.rotorBottom = Array.from(this.element.getElementsByClassName('rotor-bottom'));
 
     // Set initial values;
     this._tick();

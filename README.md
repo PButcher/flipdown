@@ -112,7 +112,7 @@ Optionally specify additional configuration settings. Currently supported settin
 
 Start the countdown.
 
-### `FlipDown.prototype.isEnded(callback)`
+### `FlipDown.prototype.ifEnded(callback)`
 
 Call a function once the countdown has ended.
 

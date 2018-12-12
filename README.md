@@ -66,7 +66,7 @@ For example, to instantiate FlipDown using the light theme instead:
 
 ```javascript
 new FlipDown(1538137672, {
-  theme = 'light'
+  theme: 'light'
 }).start();
 ```
 

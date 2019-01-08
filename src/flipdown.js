@@ -21,7 +21,7 @@ class FlipDown {
     }
 
     // FlipDown version
-    this.version = '0.2.0';
+    this.version = '0.2.1';
 
     // Initialised?
     this.initialised = false;

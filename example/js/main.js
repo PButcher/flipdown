@@ -21,4 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     body.querySelector('#flipdown').classList.toggle('flipdown__theme-dark');
     body.querySelector('#flipdown').classList.toggle('flipdown__theme-light');
   }, 5000);
+
+  // Show version number
+  var ver = document.getElementById('ver');
+  ver.innerHTML = flipdown.version;
 });

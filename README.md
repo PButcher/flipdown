@@ -4,7 +4,7 @@
 
 ⏰ A lightweight and performant flip styled countdown clock.
 
-Version: 0.2.0 [JS: 5.66KB, CSS: 4.44KB]
+Version: 0.2.1 [JS: 5.66KB, CSS: 4.47KB]
 
 ## Features
 
@@ -139,4 +139,6 @@ var flipdown = new FlipDown(1538137672)
 
 ## Acknowledgements
 
-Thanks to [@chuckbergeron](https://github.com/chuckbergeron) for his help with making FlipDown responsive.
+Thanks to the following people for their suggestions/fixes:
+- [@chuckbergeron](https://github.com/chuckbergeron) for his help with making FlipDown responsive.
+- [@vasiliki-b](https://github.com/vasiliki-b) for spotting and fixing the Safari backface-visibility issue.

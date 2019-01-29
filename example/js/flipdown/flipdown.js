@@ -24,7 +24,7 @@ var FlipDown = function () {
       el = 'flipdown';
     }
 
-    this.version = '0.2.1';
+    this.version = '0.2.2';
     this.initialised = false;
     this.now = this._getTime();
     this.epoch = uts;
@@ -137,10 +137,10 @@ var FlipDown = function () {
         this.element.appendChild(this._createRotorGroup(otherRotors));
       }
 
-      this.rotorLeafFront = Array.from(this.element.getElementsByClassName('rotor-leaf-front'));
-      this.rotorLeafRear = Array.from(this.element.getElementsByClassName('rotor-leaf-rear'));
-      this.rotorTop = Array.from(this.element.getElementsByClassName('rotor-top'));
-      this.rotorBottom = Array.from(this.element.getElementsByClassName('rotor-bottom'));
+      this.rotorLeafFront = Array.prototype.slice.call(this.element.getElementsByClassName('rotor-leaf-front'));
+      this.rotorLeafRear = Array.prototype.slice.call(this.element.getElementsByClassName('rotor-leaf-rear'));
+      this.rotorTop = Array.prototype.slice.call(this.element.getElementsByClassName('rotor-top'));
+      this.rotorBottom = Array.prototype.slice.call(this.element.getElementsByClassName('rotor-bottom'));
 
       this._tick();
 

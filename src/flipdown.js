@@ -21,7 +21,7 @@ class FlipDown {
     }
 
     // FlipDown version
-    this.version = '0.2.1';
+    this.version = '0.2.2';
 
     // Initialised?
     this.initialised = false;
@@ -211,10 +211,10 @@ class FlipDown {
     }
 
     // Store and convert rotor nodelists to arrays
-    this.rotorLeafFront = Array.from(this.element.getElementsByClassName('rotor-leaf-front'));
-    this.rotorLeafRear = Array.from(this.element.getElementsByClassName('rotor-leaf-rear'));
-    this.rotorTop = Array.from(this.element.getElementsByClassName('rotor-top'));
-    this.rotorBottom = Array.from(this.element.getElementsByClassName('rotor-bottom'));
+    this.rotorLeafFront = Array.prototype.slice.call(this.element.getElementsByClassName('rotor-leaf-front'));
+    this.rotorLeafRear = Array.prototype.slice.call(this.element.getElementsByClassName('rotor-leaf-rear'));
+    this.rotorTop = Array.prototype.slice.call(this.element.getElementsByClassName('rotor-top'));
+    this.rotorBottom = Array.prototype.slice.call(this.element.getElementsByClassName('rotor-bottom'));
 
     // Set initial values;
     this._tick();

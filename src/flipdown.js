@@ -69,9 +69,6 @@ class FlipDown {
 
     // Set options
     this._setOptions();
-
-    // Print Version
-    console.log(`FlipDown ${this.version} (Theme: ${this.opts.theme})`);
   }
 
   /**
@@ -234,8 +231,8 @@ class FlipDown {
     rotorGroup.className = 'rotor-group';
     var dayRotorGroupHeading = document.createElement('div');
     dayRotorGroupHeading.className = 'rotor-group-heading';
-    rotorGroup.appendChild(dayRotorGroupHeading);
     appendChildren(rotorGroup, rotors);
+    rotorGroup.appendChild(dayRotorGroupHeading);
     return rotorGroup;
   }
 
@@ -391,3 +388,5 @@ function appendChildren(parent, children) {
     parent.appendChild(el);
   });
 }
+
+export default FlipDown;

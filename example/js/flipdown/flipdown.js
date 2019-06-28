@@ -1,5 +1,10 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -45,8 +50,6 @@ var FlipDown = function () {
     this.opts = this._parseOptions(opt);
 
     this._setOptions();
-
-    console.log("FlipDown ".concat(this.version, " (Theme: ").concat(this.opts.theme, ")"));
   }
 
   _createClass(FlipDown, [{
@@ -155,8 +158,8 @@ var FlipDown = function () {
       rotorGroup.className = 'rotor-group';
       var dayRotorGroupHeading = document.createElement('div');
       dayRotorGroupHeading.className = 'rotor-group-heading';
-      rotorGroup.appendChild(dayRotorGroupHeading);
       appendChildren(rotorGroup, rotors);
+      rotorGroup.appendChild(dayRotorGroupHeading);
       return rotorGroup;
     }
   }, {
@@ -267,3 +270,6 @@ function appendChildren(parent, children) {
     parent.appendChild(el);
   });
 }
+
+var _default = FlipDown;
+exports["default"] = _default;

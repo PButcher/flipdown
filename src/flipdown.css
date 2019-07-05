@@ -107,6 +107,22 @@
   content: 'Seconds';
 }
 
+:lang(de) .flipdown .rotor-group:nth-child(1) .rotor-group-heading:before {
+  content: 'Tage';
+}
+
+:lang(de) .flipdown .rotor-group:nth-child(2) .rotor-group-heading:before {
+  content: 'Stunden';
+}
+
+:lang(de) .flipdown .rotor-group:nth-child(3) .rotor-group-heading:before {
+  content: 'Minuten';
+}
+
+:lang(de) .flipdown .rotor-group:nth-child(4) .rotor-group-heading:before {
+  content: 'Sekunden';
+}
+
 .flipdown .rotor-group:nth-child(n+2):nth-child(-n+3):before {
   content: '';
   position: absolute;

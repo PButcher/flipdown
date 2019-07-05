@@ -1,6 +1,6 @@
 {
   "name": "flipdown-mp",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A lightweight and performant flip styled countdown clock",
   "main": "src/flipdown.js",
   "scripts": {

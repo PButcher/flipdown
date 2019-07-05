@@ -1,6 +1,6 @@
 {
   "name": "flipdown",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A lightweight and performant flip styled countdown clock",
   "main": "src/flipdown.js",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/PButcher/flipdown.git"
+    "url": "git+ssh://git@github.com/meupatrocinio/flipdown.git"
   },
   "author": "Peter Butcher <pbutcher93@gmail.com>",
   "license": "MIT",

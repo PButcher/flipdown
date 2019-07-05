@@ -1,5 +1,5 @@
 {
-  "name": "flipdown",
+  "name": "flipdown-mp",
   "version": "0.2.3",
   "description": "A lightweight and performant flip styled countdown clock",
   "main": "src/flipdown.js",
@@ -17,9 +17,9 @@
   "author": "Peter Butcher <pbutcher93@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/PButcher/flipdown/issues"
+    "url": "https://github.com/meupatrocinio/flipdown/issues"
   },
-  "homepage": "https://github.com/PButcher/flipdown#readme",
+  "homepage": "https://github.com/meupatrocinio/flipdown#readme",
   "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.1.0",

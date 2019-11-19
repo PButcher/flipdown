@@ -11,18 +11,17 @@ const uglifycss = require('gulp-uglifycss')
 gulp.task('default', () => {
   return mergeStream(
     gulp
-      .src('src/**/*.css')
-      .pipe(uglifycss())
-      .pipe(cssToJs()),
-
-    gulp
       .src('src/**/*.js')
       .pipe(
         babel({
           presets: ['@babel/env']
         })
       )
-      .pipe(uglify())
+      .pipe(uglify()),
+    gulp
+      .src('src/**/*.css')
+      .pipe(uglifycss())
+      .pipe(cssToJs())
   )
     .pipe(concat('flipdown.min.js'))
     .pipe(gulp.dest('dist'))

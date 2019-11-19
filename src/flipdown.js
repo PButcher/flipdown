@@ -1,3 +1,5 @@
+import './flipdown.css'
+
 /**
 * @name FlipDown
 * @description Flip styled countdown clock
@@ -391,3 +393,5 @@ function appendChildren(parent, children) {
     parent.appendChild(el);
   });
 }
+
+export default FlipDown;

@@ -5,9 +5,9 @@
   "main": "src/flipdown.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "rm -rf dist && mkdir -p dist && rm -rf example/css/flipdown && mkdir -p example/css/flipdown && rm -rf example/js/flipdown && mkdir -p example/js/flipdown",
-    "dist": "npx babel src/flipdown.js -o dist/flipdown.js --no-comments && npx babel src/flipdown.js --presets=minify --no-comments -o dist/flipdown.min.js && cp src/flipdown.css dist/flipdown.css && uglifycss src/flipdown.css > dist/flipdown.min.css",
-    "example": "npx babel src/flipdown.js -o example/js/flipdown/flipdown.js --no-comments && cp dist/flipdown.css example/css/flipdown/flipdown.css",
+    "clean": "rimraf -rf dist && mkdirp -p dist && rimraf -rf example\\css\\flipdown && mkdirp -p example\\css\\flipdown && rimraf -rf example\\js\\flipdown && mkdirp -p example\\js\\flipdown",
+    "dist": "npx babel src\\flipdown.js -o dist\\flipdown.js --no-comments && npx babel src\\flipdown.js --presets=minify --no-comments -o dist\\flipdown.min.js && copy src\\flipdown.css dist\\flipdown.css && uglifycss src\\flipdown.css > dist\\flipdown.min.css",
+    "example": "npx babel src\\flipdown.js -o example\\js\\flipdown\\flipdown.js --no-comments && copy dist\\flipdown.css example\\css\\flipdown\\flipdown.css",
     "build": "npm run clean && npm run dist && npm run example"
   },
   "repository": {
@@ -20,12 +20,24 @@
     "url": "https://github.com/PButcher/flipdown/issues"
   },
   "homepage": "https://github.com/PButcher/flipdown#readme",
-  "dependencies": {},
+  "dependencies": {
+    "@babel/register": "^7.8.3",
+    "babel-loader": "^7.1.5",
+    "save-dev": "0.0.1-security"
+  },
+  "resolutions": {
+    "babel-core": "7.0.0-bridge.0"
+  },
   "devDependencies": {
-    "@babel/cli": "^7.1.0",
-    "@babel/core": "^7.1.0",
-    "@babel/preset-env": "^7.1.5",
-    "babel-preset-minify": "^0.5.0",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/node": "^7.8.4",
+    "@babel/polyfill": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
+    "babel-preset-minify": "^0.5.1",
+    "jest": "^24.8.0",
+    "mkdirp": "^1.0.3",
+    "rimraf": "^3.0.2",
     "uglifycss": "0.0.29"
   }
 }

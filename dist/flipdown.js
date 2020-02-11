@@ -92,7 +92,8 @@ var FlipDown = function () {
     key: "_parseOptions",
     value: function _parseOptions(opt) {
       return {
-        theme: opt.hasOwnProperty('theme') ? opt.theme : 'dark'
+        theme: opt.hasOwnProperty('theme') ? opt.theme : 'dark',
+        showHeaders: opt.hasOwnProperty('showHeaders') ? opt.showHeaders : true
       };
     }
   }, {
@@ -157,9 +158,13 @@ var FlipDown = function () {
     value: function _createRotorGroup(rotors) {
       var rotorGroup = document.createElement('div');
       rotorGroup.className = 'rotor-group';
-      var dayRotorGroupHeading = document.createElement('div');
-      dayRotorGroupHeading.className = 'rotor-group-heading';
-      rotorGroup.appendChild(dayRotorGroupHeading);
+
+      if (this.opts.showHeaders) {
+        var dayRotorGroupHeading = document.createElement('div');
+        dayRotorGroupHeading.className = 'rotor-group-heading';
+        rotorGroup.appendChild(dayRotorGroupHeading);
+      }
+
       appendChildren(rotorGroup, rotors);
       return rotorGroup;
     }

@@ -166,8 +166,8 @@ class FlipDown {
   **/
   _setOptions() {
 
-    // Apply theme
-    this.element.classList.add(`flipdown__theme-${this.opts.theme}`);
+    // Apply themes
+    this.opts.theme.split(',').forEach(theme => this.element.classList.add(`flipdown__theme-${theme}`));
   }
 
   /**

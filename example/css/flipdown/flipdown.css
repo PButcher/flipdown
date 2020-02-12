@@ -69,7 +69,7 @@
 /********** Theme: small **********/
 .flipdown.flipdown__theme-small {
   width: 100%;
-  height: 70px;
+  height: 100%;
 }
 
 .flipdown.flipdown__theme-small .rotor {
@@ -103,29 +103,29 @@
 
 .flipdown.flipdown__theme-small .rotor-group:nth-child(n+2):nth-child(-n+3):before,
 .flipdown.flipdown__theme-small .rotor-group:nth-child(n+2):nth-child(-n+3):after {
-  left: 69px;
+  left: 66px;
 }
 
 .flipdown.flipdown__theme-small .rotor-group:nth-child(n+2):nth-child(-n+3):before {
-  bottom: 13px;
+  bottom: 16px;
   height: 8px;
   width: 8px;
 }
 
 .flipdown.flipdown__theme-small .rotor-group:nth-child(n+2):nth-child(-n+3):after {
-  bottom: 29px;
+  bottom: 5px;
   height: 8px;
   width: 8px;
 }
 
 .flipdown.flipdown__theme-small .rotor-leaf-front,
 .flipdown.flipdown__theme-small .rotor-top {
-  line-height: 50px;
+  line-height: 30px;
 }
 
 .flipdown.flipdown__theme-small .rotor-leaf,
 .flipdown.flipdown__theme-small .rotor {
-  height: 50px;
+  height: 30px;
 }
 
 .flipdown.flipdown__theme-small .rotor-leaf-front,
@@ -133,7 +133,7 @@
 .flipdown.flipdown__theme-small .rotor-top,
 .flipdown.flipdown__theme-small .rotor-bottom,
 .flipdown.flipdown__theme-small .rotor:after {
-  height: 25px;
+  height: 15px;
 }
 
 /* END OF THEMES */

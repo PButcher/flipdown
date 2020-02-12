@@ -93,7 +93,8 @@ var FlipDown = function () {
     value: function _parseOptions(opt) {
       return {
         theme: opt.hasOwnProperty('theme') ? opt.theme : 'dark',
-        showHeaders: opt.hasOwnProperty('showHeaders') ? opt.showHeaders : true
+        showHeaders: opt.hasOwnProperty('showHeaders') ? opt.showHeaders : true,
+        showEmptyRotors: opt.hasOwnProperty('showEmptyRotors') ? opt.showEmptyRotors : true
       };
     }
   }, {
@@ -128,8 +129,9 @@ var FlipDown = function () {
         dayRotors.push(this.rotors[i]);
       }
 
-      this.element.appendChild(this._createRotorGroup(dayRotors));
+      this.element.appendChild(this._createRotorGroup(dayRotors, 'day'));
       var count = dayRotorCount;
+      var periods = ['hour', 'minute', 'second'];
 
       for (var i = 0; i < 3; i++) {
         var otherRotors = [];
@@ -139,7 +141,7 @@ var FlipDown = function () {
           count++;
         }
 
-        this.element.appendChild(this._createRotorGroup(otherRotors));
+        this.element.appendChild(this._createRotorGroup(otherRotors, periods[i]));
       }
 
       this.rotorLeafFront = Array.prototype.slice.call(this.element.getElementsByClassName('rotor-leaf-front'));
@@ -155,9 +157,9 @@ var FlipDown = function () {
     }
   }, {
     key: "_createRotorGroup",
-    value: function _createRotorGroup(rotors) {
+    value: function _createRotorGroup(rotors, period) {
       var rotorGroup = document.createElement('div');
-      rotorGroup.className = 'rotor-group';
+      rotorGroup.className = 'rotor-group rotor-period-' + period;
 
       if (this.opts.showHeaders) {
         var dayRotorGroupHeading = document.createElement('div');
@@ -255,6 +257,29 @@ var FlipDown = function () {
         setTimeout(rotorTopFlip.bind(this), 500);
         setTimeout(rotorLeafRearFlip.bind(this), 500);
       } else {
+        var dayRotor = document.querySelector(".rotor-period-day");
+        var hourRotor = document.querySelector(".rotor-period-hour");
+        var minuteRotor = document.querySelector(".rotor-period-minute");
+        var secondRotor = document.querySelector(".rotor-period-second");
+
+        if (!this.opts.showEmptyRotors) {
+          if (this.clockStrings.d == '00' && this.clockStrings.h == '00' && this.clockStrings.m == '00' && this.clockStrings.s == '00') {
+            dayRotor.style.display = 'none';
+            hourRotor.style.display = 'none';
+            minuteRotor.style.display = 'none';
+            secondRotor.style.display = 'none';
+          } else if (this.clockStrings.d == '00' && this.clockStrings.h == '00' && this.clockStrings.m == '00' && this.clockStrings.s != '00') {
+            dayRotor.style.display = 'none';
+            hourRotor.style.display = 'none';
+            minuteRotor.style.display = 'none';
+          } else if (this.clockStrings.d == '00' && this.clockStrings.h == '00' && this.clockStrings.m != '00') {
+            dayRotor.style.display = 'none';
+            hourRotor.style.display = 'none';
+          } else if (this.clockStrings.d == '00' && this.clockStrings.h != '00') {
+            hourRotor.style.display = 'none';
+          }
+        }
+
         rotorTopFlip.call(this);
         rotorLeafRearFlip.call(this);
       }

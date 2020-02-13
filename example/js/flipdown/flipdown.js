@@ -28,8 +28,11 @@ var FlipDown = function () {
     this.initialised = false;
     this.now = this._getTime();
     this.epoch = uts;
+    this.outs = null;
     this.countdownEnded = false;
+    this.countdownOccured = false;
     this.hasEndedCallback = null;
+    this.hasOccuredCallback = null;
     this.element = document.getElementById(el);
     this.rotors = [];
     this.rotorLeafFront = [];
@@ -67,6 +70,18 @@ var FlipDown = function () {
       return this;
     }
   }, {
+    key: "ifOccured",
+    value: function ifOccured(outs, cb) {
+      this.outs = outs;
+
+      this.hasOccuredCallback = function () {
+        cb();
+        this.hasOccuredCallback = null;
+      };
+
+      return this;
+    }
+  }, {
     key: "_getTime",
     value: function _getTime() {
       return new Date().getTime() / 1000;
@@ -85,6 +100,23 @@ var FlipDown = function () {
         return true;
       } else {
         this.countdownEnded = false;
+        return false;
+      }
+    }
+  }, {
+    key: "_hasCountdownEventOccured",
+    value: function _hasCountdownEventOccured() {
+      if (this.outs - this.now < 0) {
+        this.countdownOccured = true;
+
+        if (this.hasOccuredCallback != null) {
+          this.hasOccuredCallback();
+          this.hasOccuredCallback = null;
+        }
+
+        return true;
+      } else {
+        this.countdownOccured = false;
         return false;
       }
     }
@@ -162,9 +194,9 @@ var FlipDown = function () {
       rotorGroup.className = 'rotor-group rotor-period-' + period;
 
       if (this.opts.showHeaders) {
-        var dayRotorGroupHeading = document.createElement('div');
-        dayRotorGroupHeading.className = 'rotor-group-heading';
-        rotorGroup.appendChild(dayRotorGroupHeading);
+        var rotorGroupHeading = document.createElement('div');
+        rotorGroupHeading.className = 'rotor-group-heading';
+        rotorGroup.appendChild(rotorGroupHeading);
       }
 
       appendChildren(rotorGroup, rotors);
@@ -209,6 +241,8 @@ var FlipDown = function () {
       this._updateClockValues();
 
       this._hasCountdownEnded();
+
+      this._hasCountdownEventOccured();
     }
   }, {
     key: "_updateClockValues",

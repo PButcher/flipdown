@@ -1,6 +1,6 @@
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -28,8 +28,11 @@ var FlipDown = function () {
     this.initialised = false;
     this.now = this._getTime();
     this.epoch = uts;
+    this.outs = null;
     this.countdownEnded = false;
+    this.countdownOccured = false;
     this.hasEndedCallback = null;
+    this.hasOccuredCallback = null;
     this.element = document.getElementById(el);
     this.rotors = [];
     this.rotorLeafFront = [];
@@ -67,6 +70,18 @@ var FlipDown = function () {
       return this;
     }
   }, {
+    key: "ifOccured",
+    value: function ifOccured(outs, cb) {
+      this.outs = outs;
+
+      this.hasOccuredCallback = function () {
+        cb();
+        this.hasOccuredCallback = null;
+      };
+
+      return this;
+    }
+  }, {
     key: "_getTime",
     value: function _getTime() {
       return new Date().getTime() / 1000;
@@ -89,16 +104,39 @@ var FlipDown = function () {
       }
     }
   }, {
+    key: "_hasCountdownEventOccured",
+    value: function _hasCountdownEventOccured() {
+      if (this.outs - this.now < 0) {
+        this.countdownOccured = true;
+
+        if (this.hasOccuredCallback != null) {
+          this.hasOccuredCallback();
+          this.hasOccuredCallback = null;
+        }
+
+        return true;
+      } else {
+        this.countdownOccured = false;
+        return false;
+      }
+    }
+  }, {
     key: "_parseOptions",
     value: function _parseOptions(opt) {
       return {
-        theme: opt.hasOwnProperty('theme') ? opt.theme : 'dark'
+        theme: opt.hasOwnProperty('theme') ? opt.theme : 'dark',
+        showHeaders: opt.hasOwnProperty('showHeaders') ? opt.showHeaders : true,
+        showEmptyRotors: opt.hasOwnProperty('showEmptyRotors') ? opt.showEmptyRotors : true
       };
     }
   }, {
     key: "_setOptions",
     value: function _setOptions() {
-      this.element.classList.add("flipdown__theme-".concat(this.opts.theme));
+      var _this = this;
+
+      this.opts.theme.split(',').forEach(function (theme) {
+        return _this.element.classList.add("flipdown__theme-".concat(theme));
+      });
     }
   }, {
     key: "_init",
@@ -123,8 +161,9 @@ var FlipDown = function () {
         dayRotors.push(this.rotors[i]);
       }
 
-      this.element.appendChild(this._createRotorGroup(dayRotors));
+      this.element.appendChild(this._createRotorGroup(dayRotors, 'day'));
       var count = dayRotorCount;
+      var periods = ['hour', 'minute', 'second'];
 
       for (var i = 0; i < 3; i++) {
         var otherRotors = [];
@@ -134,7 +173,7 @@ var FlipDown = function () {
           count++;
         }
 
-        this.element.appendChild(this._createRotorGroup(otherRotors));
+        this.element.appendChild(this._createRotorGroup(otherRotors, periods[i]));
       }
 
       this.rotorLeafFront = Array.prototype.slice.call(this.element.getElementsByClassName('rotor-leaf-front'));
@@ -150,12 +189,16 @@ var FlipDown = function () {
     }
   }, {
     key: "_createRotorGroup",
-    value: function _createRotorGroup(rotors) {
+    value: function _createRotorGroup(rotors, period) {
       var rotorGroup = document.createElement('div');
-      rotorGroup.className = 'rotor-group';
-      var dayRotorGroupHeading = document.createElement('div');
-      dayRotorGroupHeading.className = 'rotor-group-heading';
-      rotorGroup.appendChild(dayRotorGroupHeading);
+      rotorGroup.className = 'rotor-group rotor-period-' + period;
+
+      if (this.opts.showHeaders) {
+        var rotorGroupHeading = document.createElement('div');
+        rotorGroupHeading.className = 'rotor-group-heading';
+        rotorGroup.appendChild(rotorGroupHeading);
+      }
+
       appendChildren(rotorGroup, rotors);
       return rotorGroup;
     }
@@ -198,11 +241,13 @@ var FlipDown = function () {
       this._updateClockValues();
 
       this._hasCountdownEnded();
+
+      this._hasCountdownEventOccured();
     }
   }, {
     key: "_updateClockValues",
     value: function _updateClockValues() {
-      var _this = this;
+      var _this2 = this;
 
       var init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       this.clockStrings.d = pad(this.clockValues.d, 2);
@@ -211,33 +256,33 @@ var FlipDown = function () {
       this.clockStrings.s = pad(this.clockValues.s, 2);
       this.clockValuesAsString = (this.clockStrings.d + this.clockStrings.h + this.clockStrings.m + this.clockStrings.s).split('');
       this.rotorLeafFront.forEach(function (el, i) {
-        el.textContent = _this.prevClockValuesAsString[i];
+        el.textContent = _this2.prevClockValuesAsString[i];
       });
       this.rotorBottom.forEach(function (el, i) {
-        el.textContent = _this.prevClockValuesAsString[i];
+        el.textContent = _this2.prevClockValuesAsString[i];
       });
 
       function rotorTopFlip() {
-        var _this2 = this;
+        var _this3 = this;
 
         this.rotorTop.forEach(function (el, i) {
-          if (el.textContent != _this2.clockValuesAsString[i]) {
-            el.textContent = _this2.clockValuesAsString[i];
+          if (el.textContent != _this3.clockValuesAsString[i]) {
+            el.textContent = _this3.clockValuesAsString[i];
           }
         });
       }
 
       function rotorLeafRearFlip() {
-        var _this3 = this;
+        var _this4 = this;
 
         this.rotorLeafRear.forEach(function (el, i) {
-          if (el.textContent != _this3.clockValuesAsString[i]) {
-            el.textContent = _this3.clockValuesAsString[i];
+          if (el.textContent != _this4.clockValuesAsString[i]) {
+            el.textContent = _this4.clockValuesAsString[i];
             el.parentElement.classList.add('flipped');
             var flip = setInterval(function () {
               el.parentElement.classList.remove('flipped');
               clearInterval(flip);
-            }.bind(_this3), 500);
+            }.bind(_this4), 500);
           }
         });
       }
@@ -246,6 +291,29 @@ var FlipDown = function () {
         setTimeout(rotorTopFlip.bind(this), 500);
         setTimeout(rotorLeafRearFlip.bind(this), 500);
       } else {
+        var dayRotor = document.querySelector(".rotor-period-day");
+        var hourRotor = document.querySelector(".rotor-period-hour");
+        var minuteRotor = document.querySelector(".rotor-period-minute");
+        var secondRotor = document.querySelector(".rotor-period-second");
+
+        if (!this.opts.showEmptyRotors) {
+          if (this.clockStrings.d == '00' && this.clockStrings.h == '00' && this.clockStrings.m == '00' && this.clockStrings.s == '00') {
+            dayRotor.style.display = 'none';
+            hourRotor.style.display = 'none';
+            minuteRotor.style.display = 'none';
+            secondRotor.style.display = 'none';
+          } else if (this.clockStrings.d == '00' && this.clockStrings.h == '00' && this.clockStrings.m == '00' && this.clockStrings.s != '00') {
+            dayRotor.style.display = 'none';
+            hourRotor.style.display = 'none';
+            minuteRotor.style.display = 'none';
+          } else if (this.clockStrings.d == '00' && this.clockStrings.h == '00' && this.clockStrings.m != '00') {
+            dayRotor.style.display = 'none';
+            hourRotor.style.display = 'none';
+          } else if (this.clockStrings.d == '00' && this.clockStrings.h != '00') {
+            hourRotor.style.display = 'none';
+          }
+        }
+
         rotorTopFlip.call(this);
         rotorLeafRearFlip.call(this);
       }

@@ -50,9 +50,10 @@ new FlipDown(1538137672, 'register').start();
 
 ## Themes
 
-FlipDown comes with 2 themes as standard:
+FlipDown comes with 3 themes as standard:
 * dark [default]
 * light
+* small
 
 To change the theme, you can supply the `theme` property in the `opt` object in the constructor with the theme name as a string:
 
@@ -81,6 +82,14 @@ FlipDown themes must have the class name prefix of: `.flipdown__theme-` followed
 
 You can then load your theme by specifying the `theme` property in the `opt` object of the constructor (see [Themes](#Themes)).
 
+## Show Headers
+
+Show the rotor period headers of Day, Hour, Minute and Second. Defaults to true.
+
+## Show Empty Rotors
+
+Show empty (00) rotors if the countdown doesn't require them, e.g. if the countdown is 30 minutes in the future then the day and hour rotors would be empty, if set to false these will be hidden. Defaults to true. 
+
 ## API
 
 ### `FlipDown.prototype.constructor(uts, [el], [opts])`
@@ -107,6 +116,8 @@ Type: _object_ (default: `{}`)
 Optionally specify additional configuration settings. Currently supported settings include:
 
 * [`theme`](#Themes)
+* [`showHeaders`](#Show Headers)
+* [`showEmptyRotors`](#Show Empty Rotors)
 
 ### `FlipDown.prototype.start()`
 

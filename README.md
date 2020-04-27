@@ -12,6 +12,7 @@ Version: 0.2.2 [JS: 5.72KB, CSS: 4.47KB]
 * ⚡ Performant - Animations powered by CSS transitions
 * 📱 Responsive - Works great on screens of all sizes
 * 🎨 Themeable - Choose from built-in themes, or add your own
+* 🌍 Internationalisable - Just specify the correct rotor headings in your language!
 
 ## Example
 
@@ -81,6 +82,21 @@ FlipDown themes must have the class name prefix of: `.flipdown__theme-` followed
 
 You can then load your theme by specifying the `theme` property in the `opt` object of the constructor (see [Themes](#Themes)).
 
+## Headings
+
+You can add your own headings by passing an array as part of the `opt` object. Bear in mind this won't change the functionality of the rotors (eg: the 'days' rotor won't magically start counting months because you passed it 'Months' as a heading).
+
+Suggested use is for i18n. Usage as follows:
+
+```javascript
+new FlipDown(1538137672, {
+  theme: 'light',
+  headings: ['Nap', 'Óra', 'Perc', 'Másodperc']
+}).start();
+```
+
+** Note that headings will default to English if not provided. **
+
 ## API
 
 ### `FlipDown.prototype.constructor(uts, [el], [opts])`
@@ -107,6 +123,7 @@ Type: _object_ (default: `{}`)
 Optionally specify additional configuration settings. Currently supported settings include:
 
 * [`theme`](#Themes)
+* [`headings`](#Headings)
 
 ### `FlipDown.prototype.start()`
 

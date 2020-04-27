@@ -5,7 +5,7 @@
 ⏰ A lightweight and performant flip styled countdown clock.
 
 ![NPM Version](https://img.shields.io/npm/v/flipdown?style=flat-square)
-![NPM Downloads](https://img.shields.io/npm/dt/flipdown)
+![NPM Downloads](https://img.shields.io/npm/dt/flipdown?style=flat-square)
 
 ## Features
 

@@ -1,6 +1,6 @@
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -91,8 +91,15 @@ var FlipDown = function () {
   }, {
     key: "_parseOptions",
     value: function _parseOptions(opt) {
+      var headings = ['Days', 'Hours', 'Minutes', 'Seconds'];
+
+      if (opt.headings && opt.headings.length === 4) {
+        headings = opt.headings;
+      }
+
       return {
-        theme: opt.hasOwnProperty('theme') ? opt.theme : 'dark'
+        theme: opt.hasOwnProperty('theme') ? opt.theme : 'dark',
+        headings: headings
       };
     }
   }, {
@@ -123,7 +130,7 @@ var FlipDown = function () {
         dayRotors.push(this.rotors[i]);
       }
 
-      this.element.appendChild(this._createRotorGroup(dayRotors));
+      this.element.appendChild(this._createRotorGroup(dayRotors, 0));
       var count = dayRotorCount;
 
       for (var i = 0; i < 3; i++) {
@@ -134,7 +141,7 @@ var FlipDown = function () {
           count++;
         }
 
-        this.element.appendChild(this._createRotorGroup(otherRotors));
+        this.element.appendChild(this._createRotorGroup(otherRotors, i + 1));
       }
 
       this.rotorLeafFront = Array.prototype.slice.call(this.element.getElementsByClassName('rotor-leaf-front'));
@@ -150,11 +157,13 @@ var FlipDown = function () {
     }
   }, {
     key: "_createRotorGroup",
-    value: function _createRotorGroup(rotors) {
+    value: function _createRotorGroup(rotors, rotorIndex) {
       var rotorGroup = document.createElement('div');
       rotorGroup.className = 'rotor-group';
       var dayRotorGroupHeading = document.createElement('div');
       dayRotorGroupHeading.className = 'rotor-group-heading';
+      console.log(rotorIndex);
+      dayRotorGroupHeading.setAttribute('data-before', this.opts.headings[rotorIndex]);
       rotorGroup.appendChild(dayRotorGroupHeading);
       appendChildren(rotorGroup, rotors);
       return rotorGroup;

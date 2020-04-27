@@ -4,7 +4,7 @@
 
 ⏰ A lightweight and performant flip styled countdown clock.
 
-Version: 0.2.2 [JS: 5.72KB, CSS: 4.47KB]
+Version: 0.3.1 [JS: 5.72KB, CSS: 4.47KB]
 
 ## Features
 

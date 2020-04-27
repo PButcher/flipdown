@@ -162,10 +162,6 @@ var flipdown = new FlipDown(1538137672)
   });
 ```
 
-## Contribute
-
-Pull requests and feature suggestions welcome and e
-
 ## Acknowledgements
 
 Thanks to the following people for their suggestions/fixes:

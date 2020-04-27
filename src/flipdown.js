@@ -153,9 +153,14 @@ class FlipDown {
   * @author PButcher
   **/
   _parseOptions(opt) {
+    let headings = ['Days', 'Hours', 'Minutes', 'Seconds']
+    if (opt.headings && opt.headings.length === 4) {
+      headings = opt.headings
+    }
     return {
       // Theme
-      theme: (opt.hasOwnProperty('theme')) ? opt.theme : 'dark'
+      theme: (opt.hasOwnProperty('theme')) ? opt.theme : 'dark',
+      headings
     }
   }
 
@@ -197,7 +202,7 @@ class FlipDown {
     for(var i = 0; i < dayRotorCount; i++) {
       dayRotors.push(this.rotors[i]);
     }
-    this.element.appendChild(this._createRotorGroup(dayRotors));
+    this.element.appendChild(this._createRotorGroup(dayRotors, 0));
 
     // Create other rotor groups
     var count = dayRotorCount;
@@ -207,7 +212,7 @@ class FlipDown {
         otherRotors.push(this.rotors[count]);
         count++;
       }
-      this.element.appendChild(this._createRotorGroup(otherRotors));
+      this.element.appendChild(this._createRotorGroup(otherRotors, i + 1));
     }
 
     // Store and convert rotor nodelists to arrays
@@ -229,11 +234,13 @@ class FlipDown {
   * @author PButcher
   * @param {array} rotors - A set of rotors
   **/
-  _createRotorGroup(rotors) {
+  _createRotorGroup(rotors, rotorIndex) {
     var rotorGroup = document.createElement('div');
     rotorGroup.className = 'rotor-group';
     var dayRotorGroupHeading = document.createElement('div');
     dayRotorGroupHeading.className = 'rotor-group-heading';
+    console.log(rotorIndex)
+    dayRotorGroupHeading.setAttribute('data-before', this.opts.headings[rotorIndex]) 
     rotorGroup.appendChild(dayRotorGroupHeading);
     appendChildren(rotorGroup, rotors);
     return rotorGroup;

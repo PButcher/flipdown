@@ -92,19 +92,19 @@
 }
 
 .flipdown .rotor-group:nth-child(1) .rotor-group-heading:before {
-  content: 'Days';
+  content: attr(data-before);
 }
 
 .flipdown .rotor-group:nth-child(2) .rotor-group-heading:before {
-  content: 'Hours';
+  content: attr(data-before);
 }
 
 .flipdown .rotor-group:nth-child(3) .rotor-group-heading:before {
-  content: 'Minutes';
+  content: attr(data-before);
 }
 
 .flipdown .rotor-group:nth-child(4) .rotor-group-heading:before {
-  content: 'Seconds';
+  content: attr(data-before);
 }
 
 .flipdown .rotor-group:nth-child(n+2):nth-child(-n+3):before {

@@ -323,7 +323,7 @@ class FlipDown {
    **/
   _updateClockValues(init = false) {
     // Build clock value strings
-    this.clockStrings.d = pad(this.clockValues.d, 2);
+    this.clockStrings.d = pad(this.clockValues.d,  this.daysremaining);
     this.clockStrings.h = pad(this.clockValues.h, 2);
     this.clockStrings.m = pad(this.clockValues.m, 2);
     this.clockStrings.s = pad(this.clockValues.s, 2);

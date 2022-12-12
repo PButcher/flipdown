@@ -282,3 +282,28 @@
     height: 25px;
   }
 }
+
+@media screen and (max-width: 350px) {
+  .flipdown .rotor,
+  .flipdown .rotor-leaf,
+  .flipdown .rotor-leaf-front,
+  .flipdown .rotor-leaf-rear,
+  .flipdown .rotor-top,
+  .flipdown .rotor-bottom,
+  .flipdown .rotor:after {
+    width: 20px;
+  }
+
+  .flipdown .rotor-group:nth-child(n + 2):nth-child(-n + 3):before,
+  .flipdown .rotor-group:nth-child(n + 2):nth-child(-n + 3):after {
+    left: 49px;
+  }
+}
+
+@media screen and (max-width: 260px) {
+  .flipdown,
+  .flipdown * {
+    display: none;
+    height: 0;
+  }
+}

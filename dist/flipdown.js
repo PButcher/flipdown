@@ -11,11 +11,11 @@ var FlipDown = function () {
     var el = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "flipdown";
     var opt = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     _classCallCheck(this, FlipDown);
+    this.extendedCountdown = false;
+    this.extraTime = 0;
+    this.extendedCallback = null;
     if (typeof uts !== "number") {
       throw new Error("FlipDown: Constructor expected unix timestamp, got ".concat(_typeof(uts), " instead."));
-      this.extendedCountdown = false;
-      this.extraTime = 0;
-      this.extendedCallback = null;
     }
     if (_typeof(el) === "object") {
       opt = el;
@@ -47,11 +47,12 @@ var FlipDown = function () {
     key: "start",
     value: function start() {
       if (this.extraTime > 0 && this._getTime() >= this.epoch) {
+        console.log("FlipDown: Extra time is set, extending countdown...");
         this.epoch += this.extraTime;
         this.extendedCountdown = true;
         this._hasCountdownEnded();
         this._setOptions();
-        this._init();
+        if (!this.initialised) this._init();
         this._tick();
         this.countdown = setInterval(this._tick.bind(this), 1000);
         return this;
@@ -63,16 +64,24 @@ var FlipDown = function () {
   }, {
     key: "ifEnded",
     value: function ifEnded(cb) {
+      var _this = this;
       this.hasEndedCallback = function () {
         cb();
-        this.hasEndedCallback = null;
+        _this.hasEndedCallback = null;
+        if (_this.extraTime > 0) {
+          _this.start();
+        }
       };
       return this;
     }
   }, {
     key: "ifExtendedEnded",
     value: function ifExtendedEnded(cb) {
-      this.extendedCallback = cb;
+      var _this2 = this;
+      this.extendedCallback = function () {
+        cb();
+        _this2.extendedCallback = null;
+      };
     }
   }, {
     key: "_getTime",
@@ -108,8 +117,12 @@ var FlipDown = function () {
       if (opt.headings && opt.headings.length === 4) {
         headings = opt.headings;
       }
+      this.extraTime = opt.hasOwnProperty("extraTime") ? opt.extraTime : 0;
+      this.extendedText = opt.hasOwnProperty("extendedText") ? opt.extendedText : "Extended Time";
       return {
         theme: opt.hasOwnProperty("theme") ? opt.theme : "dark",
+        extraTime: opt.hasOwnProperty("extraTime") ? opt.extraTime : 0,
+        extendedText: opt.hasOwnProperty("extendedText") ? opt.extendedText : "Extended",
         headings: headings
       };
     }
@@ -149,6 +162,12 @@ var FlipDown = function () {
       this.rotorLeafRear = Array.prototype.slice.call(this.element.getElementsByClassName("rotor-leaf-rear"));
       this.rotorTop = Array.prototype.slice.call(this.element.getElementsByClassName("rotor-top"));
       this.rotorBottom = Array.prototype.slice.call(this.element.getElementsByClassName("rotor-bottom"));
+      if (this.extendedCountdown) {
+        this.extendedTextElement = document.createElement("h4");
+        this.extendedTextElement.textContent = this.opts.extendedText;
+        this.extendedTextElement.classList.add("extended-text");
+        this.element.appendChild(this.extendedTextElement);
+      }
       this._tick();
       this._updateClockValues(true);
       return this;
@@ -206,7 +225,7 @@ var FlipDown = function () {
   }, {
     key: "_updateClockValues",
     value: function _updateClockValues() {
-      var _this = this;
+      var _this3 = this;
       var init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       this.clockStrings.d = pad(this.clockValues.d, 2);
       this.clockStrings.h = pad(this.clockValues.h, 2);
@@ -214,29 +233,29 @@ var FlipDown = function () {
       this.clockStrings.s = pad(this.clockValues.s, 2);
       this.clockValuesAsString = (this.clockStrings.d + this.clockStrings.h + this.clockStrings.m + this.clockStrings.s).split("");
       this.rotorLeafFront.forEach(function (el, i) {
-        el.textContent = _this.prevClockValuesAsString[i];
+        el.textContent = _this3.prevClockValuesAsString[i];
       });
       this.rotorBottom.forEach(function (el, i) {
-        el.textContent = _this.prevClockValuesAsString[i];
+        el.textContent = _this3.prevClockValuesAsString[i];
       });
       function rotorTopFlip() {
-        var _this2 = this;
+        var _this4 = this;
         this.rotorTop.forEach(function (el, i) {
-          if (el.textContent != _this2.clockValuesAsString[i]) {
-            el.textContent = _this2.clockValuesAsString[i];
+          if (el.textContent != _this4.clockValuesAsString[i]) {
+            el.textContent = _this4.clockValuesAsString[i];
           }
         });
       }
       function rotorLeafRearFlip() {
-        var _this3 = this;
+        var _this5 = this;
         this.rotorLeafRear.forEach(function (el, i) {
-          if (el.textContent != _this3.clockValuesAsString[i]) {
-            el.textContent = _this3.clockValuesAsString[i];
+          if (el.textContent != _this5.clockValuesAsString[i]) {
+            el.textContent = _this5.clockValuesAsString[i];
             el.parentElement.classList.add("flipped");
             var flip = setInterval(function () {
               el.parentElement.classList.remove("flipped");
               clearInterval(flip);
-            }.bind(_this3), 500);
+            }.bind(_this5), 500);
           }
         });
       }

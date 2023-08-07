@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // Unix timestamp (in seconds) to count down to
-    const fifteenSeconds = Math.floor(new Date().getTime() / 1000) + 15;
+    const fifteenSeconds = Math.floor(new Date().getTime() / 1000) + 2;
     const fiveDays3Hours2Minutes = 5 * 24 * 60 * 60 + 3 * 60 * 60 + 2 * 60;
 
     // Set up FlipDown with extra time and extended text

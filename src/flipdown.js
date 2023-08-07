@@ -8,10 +8,15 @@
  **/
 class FlipDown {
   constructor(uts, el = "flipdown", opt = {}) {
+    // Initialize extended countdown properties
+    this.extendedCountdown = false;
+    this.extraTime = 0;
+    this.extendedCallback = null;
+
     // If uts is not specified
     if (typeof uts !== "number") {
       throw new Error(
-        `FlipDown: Constructor expected unix timestamp, got ${typeof uts} instead.`
+          `FlipDown: Constructor expected unix timestamp, got ${typeof uts} instead.`
       );
     }
 
@@ -81,6 +86,18 @@ class FlipDown {
    * @author PButcher
    **/
   start() {
+    if (this.extraTime > 0 && this._getTime() >= this.epoch) {
+      console.log("FlipDown: Extra time is set, extending countdown...")
+      this.epoch += this.extraTime;
+      this.extendedCountdown = true;
+      this._hasCountdownEnded(); // Check if the extended countdown has ended
+      this._setOptions();
+      if (!this.initialised) this._init();
+      this._tick();
+      this.countdown = setInterval(this._tick.bind(this), 1000);
+      return this;
+    }
+
     // Initialise the clock
     if (!this.initialised) this._init();
 
@@ -98,14 +115,28 @@ class FlipDown {
    * @param {function} cb - Callback
    **/
   ifEnded(cb) {
-    this.hasEndedCallback = function () {
+    this.hasEndedCallback = () => {
       cb();
       this.hasEndedCallback = null;
+
+      if (this.extraTime > 0) {
+        this.start();
+      }
     };
 
     // Chainable
     return this;
   }
+
+
+
+  ifExtendedEnded(cb) {
+    this.extendedCallback = () => {
+      cb();
+      this.extendedCallback = null;
+    };
+  }
+
 
   /**
    * @name _getTime
@@ -124,6 +155,15 @@ class FlipDown {
   _hasCountdownEnded() {
     // Countdown has ended
     if (this.epoch - this.now < 0) {
+
+      if (this.extendedCountdown) {
+        this.extendedCountdown = false;
+        if (this.extendedCallback) {
+          this.extendedCallback();
+        }
+        return true;
+      }
+
       this.countdownEnded = true;
 
       // Fire the ifEnded callback once if it was set
@@ -155,9 +195,13 @@ class FlipDown {
     if (opt.headings && opt.headings.length === 4) {
       headings = opt.headings;
     }
+    this.extraTime = opt.hasOwnProperty("extraTime") ? opt.extraTime : 0;
+    this.extendedText = opt.hasOwnProperty("extendedText") ? opt.extendedText : "Extended Time";
     return {
       // Theme
       theme: opt.hasOwnProperty("theme") ? opt.theme : "dark",
+      extraTime: opt.hasOwnProperty("extraTime") ? opt.extraTime : 0,
+      extendedText: opt.hasOwnProperty("extendedText") ? opt.extendedText : "Extended",
       headings,
     };
   }
@@ -185,7 +229,7 @@ class FlipDown {
       this.daysremaining = 0;
     } else {
       this.daysremaining = Math.floor(
-        (this.epoch - this.now) / 86400
+          (this.epoch - this.now) / 86400
       ).toString().length;
     }
     var dayRotorCount = this.daysremaining <= 2 ? 2 : this.daysremaining;
@@ -215,17 +259,25 @@ class FlipDown {
 
     // Store and convert rotor nodelists to arrays
     this.rotorLeafFront = Array.prototype.slice.call(
-      this.element.getElementsByClassName("rotor-leaf-front")
+        this.element.getElementsByClassName("rotor-leaf-front")
     );
     this.rotorLeafRear = Array.prototype.slice.call(
-      this.element.getElementsByClassName("rotor-leaf-rear")
+        this.element.getElementsByClassName("rotor-leaf-rear")
     );
     this.rotorTop = Array.prototype.slice.call(
-      this.element.getElementsByClassName("rotor-top")
+        this.element.getElementsByClassName("rotor-top")
     );
     this.rotorBottom = Array.prototype.slice.call(
-      this.element.getElementsByClassName("rotor-bottom")
+        this.element.getElementsByClassName("rotor-bottom")
     );
+
+    // Add extended time text if extended countdown is active
+    if (this.extendedCountdown) {
+      this.extendedTextElement = document.createElement("h4");
+      this.extendedTextElement.textContent = this.opts.extendedText;
+      this.extendedTextElement.classList.add("extended-text");
+      this.element.appendChild(this.extendedTextElement);
+    }
 
     // Set initial values;
     this._tick();
@@ -246,8 +298,8 @@ class FlipDown {
     var dayRotorGroupHeading = document.createElement("div");
     dayRotorGroupHeading.className = "rotor-group-heading";
     dayRotorGroupHeading.setAttribute(
-      "data-before",
-      this.opts.headings[rotorIndex]
+        "data-before",
+        this.opts.headings[rotorIndex]
     );
     rotorGroup.appendChild(dayRotorGroupHeading);
     appendChildren(rotorGroup, rotors);
@@ -330,10 +382,10 @@ class FlipDown {
 
     // Concat clock value strings
     this.clockValuesAsString = (
-      this.clockStrings.d +
-      this.clockStrings.h +
-      this.clockStrings.m +
-      this.clockStrings.s
+        this.clockStrings.d +
+        this.clockStrings.h +
+        this.clockStrings.m +
+        this.clockStrings.s
     ).split("");
 
     // Update rotor values
@@ -365,11 +417,11 @@ class FlipDown {
           el.textContent = this.clockValuesAsString[i];
           el.parentElement.classList.add("flipped");
           var flip = setInterval(
-            function () {
-              el.parentElement.classList.remove("flipped");
-              clearInterval(flip);
-            }.bind(this),
-            500
+              function () {
+                el.parentElement.classList.remove("flipped");
+                clearInterval(flip);
+              }.bind(this),
+              500
           );
         }
       });

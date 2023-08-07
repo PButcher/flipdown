@@ -1,29 +1,26 @@
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var FlipDown = function () {
   function FlipDown(uts) {
     var el = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "flipdown";
     var opt = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
     _classCallCheck(this, FlipDown);
-
+    this.extendedCountdown = false;
+    this.extraTime = 0;
+    this.extendedCallback = null;
     if (typeof uts !== "number") {
       throw new Error("FlipDown: Constructor expected unix timestamp, got ".concat(_typeof(uts), " instead."));
     }
-
     if (_typeof(el) === "object") {
       opt = el;
       el = "flipdown";
     }
-
     this.version = "0.3.2";
     this.initialised = false;
     this.now = this._getTime();
@@ -43,15 +40,23 @@ var FlipDown = function () {
     this.clockValuesAsString = [];
     this.prevClockValuesAsString = [];
     this.opts = this._parseOptions(opt);
-
     this._setOptions();
-
     console.log("FlipDown ".concat(this.version, " (Theme: ").concat(this.opts.theme, ")"));
   }
-
   _createClass(FlipDown, [{
     key: "start",
     value: function start() {
+      if (this.extraTime > 0 && this._getTime() >= this.epoch) {
+        console.log("FlipDown: Extra time is set, extending countdown...");
+        this.epoch += this.extraTime;
+        this.extendedCountdown = true;
+        this._hasCountdownEnded();
+        this._setOptions();
+        if (!this.initialised) this._init();
+        this._tick();
+        this.countdown = setInterval(this._tick.bind(this), 1000);
+        return this;
+      }
       if (!this.initialised) this._init();
       this.countdown = setInterval(this._tick.bind(this), 1000);
       return this;
@@ -59,12 +64,24 @@ var FlipDown = function () {
   }, {
     key: "ifEnded",
     value: function ifEnded(cb) {
+      var _this = this;
       this.hasEndedCallback = function () {
         cb();
-        this.hasEndedCallback = null;
+        _this.hasEndedCallback = null;
+        if (_this.extraTime > 0) {
+          _this.start();
+        }
       };
-
       return this;
+    }
+  }, {
+    key: "ifExtendedEnded",
+    value: function ifExtendedEnded(cb) {
+      var _this2 = this;
+      this.extendedCallback = function () {
+        cb();
+        _this2.extendedCallback = null;
+      };
     }
   }, {
     key: "_getTime",
@@ -75,13 +92,18 @@ var FlipDown = function () {
     key: "_hasCountdownEnded",
     value: function _hasCountdownEnded() {
       if (this.epoch - this.now < 0) {
+        if (this.extendedCountdown) {
+          this.extendedCountdown = false;
+          if (this.extendedCallback) {
+            this.extendedCallback();
+          }
+          return true;
+        }
         this.countdownEnded = true;
-
         if (this.hasEndedCallback != null) {
           this.hasEndedCallback();
           this.hasEndedCallback = null;
         }
-
         return true;
       } else {
         this.countdownEnded = false;
@@ -92,13 +114,15 @@ var FlipDown = function () {
     key: "_parseOptions",
     value: function _parseOptions(opt) {
       var headings = ["Days", "Hours", "Minutes", "Seconds"];
-
       if (opt.headings && opt.headings.length === 4) {
         headings = opt.headings;
       }
-
+      this.extraTime = opt.hasOwnProperty("extraTime") ? opt.extraTime : 0;
+      this.extendedText = opt.hasOwnProperty("extendedText") ? opt.extendedText : "Extended Time";
       return {
         theme: opt.hasOwnProperty("theme") ? opt.theme : "dark",
+        extraTime: opt.hasOwnProperty("extraTime") ? opt.extraTime : 0,
+        extendedText: opt.hasOwnProperty("extendedText") ? opt.extendedText : "Extended",
         headings: headings
       };
     }
@@ -111,48 +135,41 @@ var FlipDown = function () {
     key: "_init",
     value: function _init() {
       this.initialised = true;
-
       if (this._hasCountdownEnded()) {
         this.daysremaining = 0;
       } else {
         this.daysremaining = Math.floor((this.epoch - this.now) / 86400).toString().length;
       }
-
       var dayRotorCount = this.daysremaining <= 2 ? 2 : this.daysremaining;
-
       for (var i = 0; i < dayRotorCount + 6; i++) {
         this.rotors.push(this._createRotor(0));
       }
-
       var dayRotors = [];
-
       for (var i = 0; i < dayRotorCount; i++) {
         dayRotors.push(this.rotors[i]);
       }
-
       this.element.appendChild(this._createRotorGroup(dayRotors, 0));
       var count = dayRotorCount;
-
       for (var i = 0; i < 3; i++) {
         var otherRotors = [];
-
         for (var j = 0; j < 2; j++) {
           otherRotors.push(this.rotors[count]);
           count++;
         }
-
         this.element.appendChild(this._createRotorGroup(otherRotors, i + 1));
       }
-
       this.rotorLeafFront = Array.prototype.slice.call(this.element.getElementsByClassName("rotor-leaf-front"));
       this.rotorLeafRear = Array.prototype.slice.call(this.element.getElementsByClassName("rotor-leaf-rear"));
       this.rotorTop = Array.prototype.slice.call(this.element.getElementsByClassName("rotor-top"));
       this.rotorBottom = Array.prototype.slice.call(this.element.getElementsByClassName("rotor-bottom"));
-
+      if (this.extendedCountdown) {
+        this.extendedTextElement = document.createElement("h4");
+        this.extendedTextElement.textContent = this.opts.extendedText;
+        this.extendedTextElement.classList.add("extended-text");
+        this.element.appendChild(this.extendedTextElement);
+      }
       this._tick();
-
       this._updateClockValues(true);
-
       return this;
     }
   }, {
@@ -202,16 +219,13 @@ var FlipDown = function () {
       this.clockValues.m = Math.floor(diff / 60);
       diff -= this.clockValues.m * 60;
       this.clockValues.s = Math.floor(diff);
-
       this._updateClockValues();
-
       this._hasCountdownEnded();
     }
   }, {
     key: "_updateClockValues",
     value: function _updateClockValues() {
-      var _this = this;
-
+      var _this3 = this;
       var init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       this.clockStrings.d = pad(this.clockValues.d, 2);
       this.clockStrings.h = pad(this.clockValues.h, 2);
@@ -219,37 +233,32 @@ var FlipDown = function () {
       this.clockStrings.s = pad(this.clockValues.s, 2);
       this.clockValuesAsString = (this.clockStrings.d + this.clockStrings.h + this.clockStrings.m + this.clockStrings.s).split("");
       this.rotorLeafFront.forEach(function (el, i) {
-        el.textContent = _this.prevClockValuesAsString[i];
+        el.textContent = _this3.prevClockValuesAsString[i];
       });
       this.rotorBottom.forEach(function (el, i) {
-        el.textContent = _this.prevClockValuesAsString[i];
+        el.textContent = _this3.prevClockValuesAsString[i];
       });
-
       function rotorTopFlip() {
-        var _this2 = this;
-
+        var _this4 = this;
         this.rotorTop.forEach(function (el, i) {
-          if (el.textContent != _this2.clockValuesAsString[i]) {
-            el.textContent = _this2.clockValuesAsString[i];
+          if (el.textContent != _this4.clockValuesAsString[i]) {
+            el.textContent = _this4.clockValuesAsString[i];
           }
         });
       }
-
       function rotorLeafRearFlip() {
-        var _this3 = this;
-
+        var _this5 = this;
         this.rotorLeafRear.forEach(function (el, i) {
-          if (el.textContent != _this3.clockValuesAsString[i]) {
-            el.textContent = _this3.clockValuesAsString[i];
+          if (el.textContent != _this5.clockValuesAsString[i]) {
+            el.textContent = _this5.clockValuesAsString[i];
             el.parentElement.classList.add("flipped");
             var flip = setInterval(function () {
               el.parentElement.classList.remove("flipped");
               clearInterval(flip);
-            }.bind(_this3), 500);
+            }.bind(_this5), 500);
           }
         });
       }
-
       if (!init) {
         setTimeout(rotorTopFlip.bind(this), 500);
         setTimeout(rotorLeafRearFlip.bind(this), 500);
@@ -257,19 +266,15 @@ var FlipDown = function () {
         rotorTopFlip.call(this);
         rotorLeafRearFlip.call(this);
       }
-
       this.prevClockValuesAsString = this.clockValuesAsString;
     }
   }]);
-
   return FlipDown;
 }();
-
 function pad(n, len) {
   n = n.toString();
   return n.length < len ? pad("0" + n, len) : n;
 }
-
 function appendChildren(parent, children) {
   children.forEach(function (el) {
     parent.appendChild(el);

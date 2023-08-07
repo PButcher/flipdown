@@ -13,6 +13,11 @@ class FlipDown {
       throw new Error(
         `FlipDown: Constructor expected unix timestamp, got ${typeof uts} instead.`
       );
+
+      // Initialize extended countdown properties
+      this.extendedCountdown = false;
+      this.extraTime = 0;
+      this.extendedCallback = null;
     }
 
     // If opt is specified, but not el
@@ -81,6 +86,17 @@ class FlipDown {
    * @author PButcher
    **/
   start() {
+    if (this.extraTime > 0 && this._getTime() >= this.epoch) {
+      this.epoch += this.extraTime;
+      this.extendedCountdown = true;
+      this._hasCountdownEnded(); // Check if the extended countdown has ended
+      this._setOptions();
+      this._init();
+      this._tick();
+      this.countdown = setInterval(this._tick.bind(this), 1000);
+      return this;
+    }
+
     // Initialise the clock
     if (!this.initialised) this._init();
 
@@ -107,6 +123,10 @@ class FlipDown {
     return this;
   }
 
+  ifExtendedEnded(cb) {
+    this.extendedCallback = cb;
+  }
+
   /**
    * @name _getTime
    * @description Get the time in seconds (unix timestamp)
@@ -124,6 +144,15 @@ class FlipDown {
   _hasCountdownEnded() {
     // Countdown has ended
     if (this.epoch - this.now < 0) {
+
+      if (this.extendedCountdown) {
+        this.extendedCountdown = false;
+        if (this.extendedCallback) {
+          this.extendedCallback();
+        }
+        return true;
+      }
+
       this.countdownEnded = true;
 
       // Fire the ifEnded callback once if it was set

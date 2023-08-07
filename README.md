@@ -31,17 +31,33 @@ For basic usage, FlipDown takes a unix timestamp (in seconds) as an argument.
 new FlipDown(1538137672).start();
 ```
 
-Include the [CSS and JS](https://github.com/PButcher/flipdown/tree/master/dist) in `<head>` and include the following line in your HTML.
+Include the [CSS and JS](https://github.com/PButcher/flipdown/tree/master/dist) in `<head>` and include the following
+line in your HTML.
 
 ```html
+
 <div id="flipdown" class="flipdown"></div>
 ```
 
 See a full example [here](https://github.com/PButcher/flipdown/tree/master/example).
 
+## Extended Timer Usage
+
+To display an extended timer, simply provide the extendedText option during instantiation:
+
+```javascript
+new FlipDown(1631000000, {
+    extraTime: 5, // Set the extra time in seconds
+}).start();
+```
+When extraTime is set, the timer will start extra countdown after the original one ends.
+
+e.g: Bonus Time
+
 ## Multiple Instances
 
-To use multiple instances of FlipDown on the same page, specify a DOM element ID as the second argument in FlipDown's constructor:
+To use multiple instances of FlipDown on the same page, specify a DOM element ID as the second argument in FlipDown's
+constructor:
 
 ```javascript
 new FlipDown(1588017373, "registerBy").start();
@@ -49,6 +65,7 @@ new FlipDown(1593561600, "eventStart").start();
 ```
 
 ```html
+
 <div id="registerBy" class="flipdown"></div>
 <div id="eventStart" class="flipdown"></div>
 ```
@@ -60,11 +77,12 @@ FlipDown comes with 2 themes as standard:
 - dark [default]
 - light
 
-To change the theme, you can supply the `theme` property in the `opt` object in the constructor with the theme name as a string:
+To change the theme, you can supply the `theme` property in the `opt` object in the constructor with the theme name as a
+string:
 
 ```javascript
 {
-  theme: "light";
+    theme: "light";
 }
 ```
 
@@ -72,30 +90,35 @@ For example, to instantiate FlipDown using the light theme instead:
 
 ```javascript
 new FlipDown(1538137672, {
-  theme: "light",
+    theme: "light",
 }).start();
 ```
 
 ### Custom Themes
 
-Custom themes can be added by adding a new stylesheet using the FlipDown [theme template](https://github.com/PButcher/flipdown/blob/master/src/flipdown.css#L3-L34).
+Custom themes can be added by adding a new stylesheet using the
+FlipDown [theme template](https://github.com/PButcher/flipdown/blob/master/src/flipdown.css#L3-L34).
 
-FlipDown themes must have the class name prefix of: `.flipdown__theme-` followed by the name of your theme. For example, the standard theme class names are:
+FlipDown themes must have the class name prefix of: `.flipdown__theme-` followed by the name of your theme. For example,
+the standard theme class names are:
 
 - `.flipdown__theme-dark`
 - `.flipdown__theme-light`
 
-You can then load your theme by specifying the `theme` property in the `opt` object of the constructor (see [Themes](#Themes)).
+You can then load your theme by specifying the `theme` property in the `opt` object of the constructor (
+see [Themes](#Themes)).
 
 ## Headings
 
-You can add your own rotor group headings by passing an array as part of the `opt` object. Bear in mind this won't change the functionality of the rotors (eg: the 'days' rotor won't magically start counting months because you passed it 'Months' as a heading).
+You can add your own rotor group headings by passing an array as part of the `opt` object. Bear in mind this won't
+change the functionality of the rotors (eg: the 'days' rotor won't magically start counting months because you passed
+it 'Months' as a heading).
 
 Suggested use is for i18n. Usage as follows:
 
 ```javascript
 new FlipDown(1538137672, {
-  headings: ["Nap", "Óra", "Perc", "Másodperc"],
+    headings: ["Nap", "Óra", "Perc", "Másodperc"],
 }).start();
 ```
 
@@ -153,13 +176,13 @@ Function to execute once the countdown has ended.
 ```javascript
 var flipdown = new FlipDown(1538137672)
 
-  // Start the countdown
-  .start()
+    // Start the countdown
+    .start()
 
-  // Do something when the countdown ends
-  .ifEnded(() => {
-    console.log("The countdown has ended!");
-  });
+    // Do something when the countdown ends
+    .ifEnded(() => {
+        console.log("The countdown has ended!");
+    });
 ```
 
 ## Acknowledgements
@@ -169,3 +192,5 @@ Thanks to the following people for their suggestions/fixes:
 - [@chuckbergeron](https://github.com/chuckbergeron) for his help with making FlipDown responsive.
 - [@vasiliki-b](https://github.com/vasiliki-b) for spotting and fixing the Safari backface-visibility issue.
 - [@joeinnes](https://github.com/joeinnes) for adding i18n to rotor group headings.
+- [@2btech-llc](https://github.com/2btech-llc) for contributing extended timer functionality.
+- [@kha333n](https://github.com/kha333n)  for contributing extended timer implementation.
